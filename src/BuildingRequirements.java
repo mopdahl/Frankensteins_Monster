@@ -1,0 +1,6 @@
+interface BuildingRequirements {
+ 
+    String getName();
+    
+    
+}
