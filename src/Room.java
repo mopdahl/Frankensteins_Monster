@@ -1,4 +1,4 @@
-//import java.util.ArrayList
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -6,7 +6,7 @@ public class Room implements RoomRequirements {
     
     private String name;
     private String description;
-    //ArrayList<Person> people;
+    ArrayList<Person> people;
     //ArrayList<GrabbableObject> items;
     HashMap<Direction, Boolean> exits; // Possibly change the boolean value to a Door class later
 
@@ -14,8 +14,8 @@ public class Room implements RoomRequirements {
     public Room(String name, String description) {
         this.name = name;
         this.description = description;
-        // this.people = new ArrayList<>();
-        // this.items = new ArrayList<>();
+        this.people = new ArrayList<>();
+        //this.items = new ArrayList<>();
         this.exits = new HashMap<>();
     }
 
@@ -31,8 +31,10 @@ public class Room implements RoomRequirements {
         return this.description;
     }
 
+    
+
     public static void main(String[] args) {
-        
+        System.out.println("Room main");
     }
 
 }
