@@ -1,3 +1,4 @@
+//import java.util.ArrayList
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -15,7 +16,7 @@ public class Room implements RoomRequirements {
         this.name = name;
         this.description = description;
         this.people = new ArrayList<>();
-        //this.items = new ArrayList<>();
+        // this.items = new ArrayList<>();
         this.exits = new HashMap<>();
     }
 
@@ -31,10 +32,15 @@ public class Room implements RoomRequirements {
         return this.description;
     }
 
-    
+    public String toString() {
+        return this.name;
+    }
 
     public static void main(String[] args) {
-        System.out.println("Room main");
+
+
+
+
     }
 
 }
