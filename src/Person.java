@@ -24,7 +24,11 @@ public class Person {
     }
 
     public void enter(Building building) {
-        this.currentBuilding = building;
+        if (this.currentBuilding == null){
+            this.currentBuilding = building;
+        } else {
+            System.out.println("You are currently in a building, please exit it first before entering another building.");
+        }
 
     }
 
@@ -97,9 +101,17 @@ public class Person {
  
     }
 
-    // public void exit(Building building) {
-        
-    // }
+    public void exit(Building building) {
+        if (this.currentBuilding == building){
+            if (this.currentRoom.hasExit == true){
+                this.currentBuilding = null;
+            } else {
+                System.out.println("The room you are currently in does not have an exit.");
+            }
+        } else {
+            System.out.println("You are not currently in this building.");
+        }
+    }
 
     // public void attack(Person person){
 
