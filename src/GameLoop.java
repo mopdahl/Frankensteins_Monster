@@ -111,7 +111,7 @@ public class GameLoop {
         // Initializing Player
 
         this.player = new Person("Frankie");
-        this.player.currentRoom = lab;
+        //this.player.currentRoom = lab; -> currentRoom is currently private
     }
 
     public static void main(String[] args) {
