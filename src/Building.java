@@ -180,6 +180,9 @@ public class Building implements BuildingRequirements {
         yushan.exit(mansion);
 
         System.out.println(yushan.getCurrentRoom());
+
+        yushan.enter(woods);
+        System.out.println(yushan.getCurrentBuilding());
         
         // yushan.enter(mansion);
         // System.out.println("Yushan is currently in: " + yushan.getCurrentBuilding());
