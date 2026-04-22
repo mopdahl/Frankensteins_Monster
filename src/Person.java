@@ -1,16 +1,18 @@
 public class Person {
     
     //Attributes
-    String name;
-    Building currentBuilding;
-    Room currentRoom;
-    int healthLevel;
+    public String name;
+    private Building currentBuilding;
+    private Building previouslyEnteredBuilding;
+    private Room currentRoom;
+    private int healthLevel;
 
 
     //Constructor
     public Person(String name){
         this.name = name;
         this.currentBuilding = null;
+        this.previouslyEnteredBuilding = null;
         this.currentRoom = null;
         this.healthLevel = 100;
     }
@@ -23,16 +25,22 @@ public class Person {
         return this.currentRoom;
     }
 
+    public int getHealthLevel(){
+        return this.healthLevel;
+    }
+
+    public String getName(){
+        return this.name;
+    }
     public void enter(Building building) {
         if (this.currentBuilding == null){
             this.currentBuilding = building;
         } else {
             System.out.println("You are currently in a building, please exit it first before entering another building.");
         }
-
     }
 
-    public void enter(Room desiredRoom, Building building){
+    public void enter(Room desiredRoom){
 
         int desiredRow = 0;
         int desiredColumn = 0;
@@ -40,36 +48,32 @@ public class Person {
         int currentColumn = 0;
 
         // This method just allows you to enter the room if you currently aren't in a room, only for game designer
-        if (this.currentRoom == null){
-
-            this.currentRoom = desiredRoom;
+        if (this.currentRoom == null && this.previouslyEnteredBuilding == null){
+                this.currentRoom = desiredRoom;
+            System.out.println("You have entered " + desiredRoom);
             return;
-            
-        }
+        } 
 
         // Get current room row, column:
-        for (int i = 0; i <= building.rooms.size(); i++){
-            if (this.currentRoom.equals(building.rooms.get(i).get(0))){
-                Object x = building.rooms.get(i).get(1);
-                Object y = building.rooms.get(i).get(2);
+        for (int i = 0; i <= this.currentBuilding.rooms.size(); i++){
+            if (this.currentRoom.equals(this.currentBuilding.rooms.get(i).get(0))){
+                Object x = this.currentBuilding.rooms.get(i).get(1);
+                Object y = this.currentBuilding.rooms.get(i).get(2);
 
                 currentRow = Integer.parseInt(x.toString());
                 currentColumn = Integer.parseInt(y.toString());
-                System.out.println("You are in coordinates: " + currentRow + ", " + currentColumn);
                 break;
             }
         }
 
         // current desired room row, column
-        for (int i = 0; i <= building.rooms.size(); i++){
-            if (desiredRoom.equals(building.rooms.get(i).get(0))){
-                Object desiredRoomRow = building.rooms.get(i).get(1);
-                Object desiredRoomColumn = building.rooms.get(i).get(2);
+        for (int i = 0; i <= this.currentBuilding.rooms.size(); i++){
+            if (desiredRoom.equals(this.currentBuilding.rooms.get(i).get(0))){
+                Object desiredRoomRow = this.currentBuilding.rooms.get(i).get(1);
+                Object desiredRoomColumn = this.currentBuilding.rooms.get(i).get(2);
 
                 desiredRow = Integer.parseInt(desiredRoomRow.toString());
-                desiredColumn = Integer.parseInt(desiredRoomColumn.toString());
-
-                System.out.println("You want to get to coordinates: " + desiredRow + ", " + desiredColumn);
+                desiredColumn = Integer.parseInt(desiredRoomColumn.toString());    
                 break;
             } 
         }
@@ -83,6 +87,7 @@ public class Person {
         // Checks to see if row is within +- 1.
         if ((currentRowPlus == desiredRow && currentColumn == desiredColumn) || (currentRowMinus == desiredRow && currentColumn == desiredColumn)) {
             this.currentRoom = desiredRoom;
+            System.out.println("You have entered " + desiredRoom);
         } else {
             int currentColumnPlus = currentColumn + 1;
             int currentColumnMinus = currentColumn - 1;
@@ -90,21 +95,23 @@ public class Person {
             //checks to see if column is within +-1.
             if ((currentRow == desiredRow && currentColumnPlus == desiredColumn) || (currentRow == desiredRow && currentColumnMinus == desiredColumn)) {
                 this.currentRoom = desiredRoom;
+                System.out.println("You have entered " + desiredRoom);
 
                 } else {
                     // This will be a runtime exception eventually I believe,
                     // Later on maybe implement a "This room does not even exist" exception.
                     System.out.println("You are not next to this room, you cannot enter this room.");
-                }}
-
-
- 
+                }
+            }
     }
 
     public void exit(Building building) {
         if (this.currentBuilding == building){
             if (this.currentRoom.hasExit == true){
+                this.previouslyEnteredBuilding = building;
                 this.currentBuilding = null;
+                this.currentRoom = null;
+                System.out.println("You have exited " + building);
             } else {
                 System.out.println("The room you are currently in does not have an exit.");
             }
