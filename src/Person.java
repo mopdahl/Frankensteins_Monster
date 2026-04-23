@@ -63,9 +63,16 @@ public class Person {
         // This method just allows you to enter the room if you currently aren't in a room, only for game designer
         if (this.currentRoom == null && this.previouslyEnteredBuilding == null){
                 this.currentRoom = desiredRoom;
+            System.out.println("-------------------------");
             System.out.println("You have entered " + desiredRoom);
+            System.out.println("-------------------------");
             return;
         } 
+
+        if (this.currentRoom == desiredRoom){
+            System.out.println("You are already in this room!");
+            return;
+        }
 
         // Get current room row, column:
         for (int i = 0; i <= this.currentBuilding.rooms.size(); i++){

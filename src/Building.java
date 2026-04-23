@@ -23,6 +23,17 @@ public class Building implements BuildingRequirements {
         return this.name;
     }
 
+    public void getRooms(){
+        ArrayList<Object> buildingRooms = new ArrayList<>();
+
+        for (int i = 0; i < this.rooms.size(); i++) {
+            buildingRooms.add(this.rooms.get(i).get(0));    
+        }
+
+        for (int i = 0; i < buildingRooms.size(); i++) {
+            System.out.println(i+1 + ": " + buildingRooms.get(i));
+        }
+    }
 
     public String toString(){
         return this.name;
@@ -183,38 +194,6 @@ public class Building implements BuildingRequirements {
 
         yushan.enter(woods);
         System.out.println(yushan.getCurrentBuilding());
-        
-        // yushan.enter(mansion);
-        // System.out.println("Yushan is currently in: " + yushan.getCurrentBuilding());
-        // System.out.println("Yushan is currently in room: " + yushan.getCurrentRoom());
-
-        // System.out.println(mansion.rooms);
-        // System.out.println(yushan.getCurrentRoom());
-
-        // yushan.enter(victorsRoom);
-        // System.out.println(yushan.getCurrentRoom());
-
-        // yushan.enter(lab);
-        // System.out.println(yushan.getCurrentRoom());
-
-        // yushan.enter(kitchen);
-
-        // System.out.println(yushan.getCurrentRoom());
-
-        // yushan.exit(mansion);
-
-        // yushan.enter(livingRoom);
-
-        // System.out.println(yushan.getCurrentBuilding());
-
-        // yushan.exit(mansion);
-
-        // yushan.enter(woods);
-
-        // System.out.println(yushan.getCurrentBuilding());
-        // System.out.println(woods.rooms);
-
-        // // Need to implement a system where player can only exit a building while in a certain room.
 
     }}
 

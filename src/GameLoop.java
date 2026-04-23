@@ -119,7 +119,7 @@ public class GameLoop {
 
         // Initializing Player
 
-        this.player = new Person("Frankie");
+        this.player = new Player("Frankie", mansion, lab);
         //this.player.currentRoom = lab; -> currentRoom is currently private
     }
 
@@ -134,6 +134,12 @@ public class GameLoop {
             this.player.enter(destinationRoom);
         } else if (destination instanceof Building destinationBuilding) {
             this.player.enter(destinationBuilding);
+            // Shows what rooms is existant.
+            // I might move everything to the building class later on so it's not that compacted in here.
+            System.out.println("-------------------------");
+            System.out.println("Here is the list of possible rooms within " + destinationBuilding + ":");
+            destinationBuilding.getRooms();
+            System.out.println("-------------------------"); 
         } else {
             throw new RuntimeException(destinationName + " is not an accessible location.");
         }
@@ -193,12 +199,13 @@ public class GameLoop {
 
         boolean stillPlaying = true;
 
-        System.out.println("Welcome to Draft #1!\nTo begin, 'enter mansion', then 'enter living room'.");
+        System.out.println("Welcome to Draft #1!");
         System.out.println("Type 'enter' to move between buildings or rooms, 'exit' to leave a building, or 'look' to see the description of the room you're in.\nType 'quit' to end the game.");
 
         // Game loop
         do {
 
+            System.out.print("Your move: ");
             String[] currentInput = input.nextLine().toLowerCase().split("\s+");
             
             // The first word of the input

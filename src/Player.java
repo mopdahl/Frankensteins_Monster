@@ -2,10 +2,11 @@ public class Player extends Person {
 
     Boolean canRead;
 
-    public Player(String name) {
+    public Player(String name, Building building, Room room) {
         super(name);
         this.canRead = false;
-
+        this.currentBuilding = building;
+        this.currentRoom = room;
     }
 
     public void respawn(){
