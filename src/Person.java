@@ -1,12 +1,17 @@
+import java.util.ArrayList;
+
 public class Person {
     
     //Attributes
     public String name;
-    private Building currentBuilding;
-    private Building previouslyEnteredBuilding;
-    private Room currentRoom;
-    private int healthLevel;
-
+    protected Building currentBuilding;
+    protected Building previouslyEnteredBuilding;
+    protected Room currentRoom;
+    protected int healthLevel;
+    protected ArrayList<GrabbableObject> inventory;
+    protected int inventoryWeight;
+    protected int inventoryLimit;
+    protected boolean alive;
 
     //Constructor
     public Person(String name){
@@ -15,6 +20,14 @@ public class Person {
         this.previouslyEnteredBuilding = null;
         this.currentRoom = null;
         this.healthLevel = 100;
+        this.inventory = new ArrayList<>();
+        this.inventoryLimit = 10;
+        this.inventoryWeight = 0;
+        this.alive = true;
+    }
+
+    public Person(){
+        this("Name Unknown");
     }
 
     public Building getCurrentBuilding(){
@@ -120,13 +133,53 @@ public class Person {
         }
     }
 
-    // public void attack(Person person){
+    public void attack(Person person){
+        if (person.currentRoom == this.currentRoom){
+            //in the future we probably want a different health level change if the person is holding a weapon
+            // also maybe in the future if the person being attacked has armor?
+            person.healthLevel -= 10;
 
-    // }
+        }
+    }
 
-    // public String talk(){
+    public void respondToAttack(){
 
-    // }
+
+    }
+
+    public void pickUp(GrabbableObject object){
+        if (!this.inventory.contains(object)){
+            if (this.inventory.size() < this.inventoryLimit){
+                this.inventory.add(object);
+                // Probably need a separate conditional for this.
+                this.inventoryWeight += object.weight;
+            } else {
+                System.out.println("Your inventory is full.");
+            }
+        } else {
+            System.out.println("You already have " + object + " in your inventory.");
+        }
+    }
+
+    public void putDown(GrabbableObject object){
+        if (this.inventory.contains(object)){
+            this.inventory.remove(object);
+        } else {
+            System.out.println(object + " is not in your inventory.");
+        }
+    }
+    
+
+    public void consume(FoodObject food){
+        if (this.inventory.contains(food)){
+            // In the future we can have maybe rankings for food? For like how much health it gives the player?
+            this.healthLevel += food.healthBoost;
+            // Removes food item from inventory
+            this.inventory.remove(food);
+        } else {
+            System.out.println("You do not possess this item.");
+        }
+    }
 
 
 
