@@ -38,6 +38,27 @@ public class Room implements RoomRequirements {
         return this.name;
     }
 
+    public void addPerson(Person person) {
+        this.people.add(person);
+        person.currentRoom = this;
+    }
+
+    public void removePerson(Person person) {
+        if (this.people.contains(person)) {
+            this.people.remove(person);
+        }
+    }
+
+    public void addItem(GrabbableObject item) {
+        this.items.add(item);
+    }
+
+    public void removeItem(GrabbableObject item) {
+        if (this.items.contains(item)) {
+            this.items.remove(item);
+        }
+    }
+
     public static void main(String[] args) {
 
 

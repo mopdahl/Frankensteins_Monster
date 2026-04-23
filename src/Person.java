@@ -160,6 +160,7 @@ public class Person {
                 this.inventory.add(object);
                 // Probably need a separate conditional for this.
                 this.inventoryWeight += object.weight;
+                this.getCurrentRoom().removeItem(object);
             } else {
                 System.out.println("Your inventory is full.");
             }
@@ -171,6 +172,8 @@ public class Person {
     public void putDown(GrabbableObject object){
         if (this.inventory.contains(object)){
             this.inventory.remove(object);
+            this.inventoryWeight -= object.weight;
+            this.getCurrentRoom().addItem(object);
         } else {
             System.out.println(object + " is not in your inventory.");
         }
@@ -188,6 +191,8 @@ public class Person {
         }
     }
 
-
+    public String toString() {
+        return this.name;
+    }
 
 }

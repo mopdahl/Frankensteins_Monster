@@ -23,8 +23,19 @@ public class Player extends Person {
         this.canRead = true;
     }
 
-    public void observeRoom(Room room){
+    public void observeRoom(Room room){ // Reformat later
         System.out.println(room.getDescription());
+
+        if (!room.items.isEmpty()) {
+            System.out.print("Items: ");
+            System.out.println(room.items);
+        }
+
+        if (!room.people.isEmpty()) {
+            System.out.print("People: ");
+            System.out.println(room.people);
+        }
+
     }
     public void read(Book book){
         if (this.canRead == true){

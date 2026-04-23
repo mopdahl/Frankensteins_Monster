@@ -25,12 +25,13 @@ public class GameLoop {
         commands.put("enter", destinationName -> this.enter(destinationName));
         commands.put("exit", buildingName -> this.player.exit(this.player.getCurrentBuilding())); // currently accepts any string after first word 'exit'
         commands.put("look", objName -> this.look(objName)); // placeholder
-        commands.put("get", objName -> this.player.pickUp(this.getObjectFromString(objName))); // edit Person.get to change currentRoom inventory
-        commands.put("drop", objName -> this.player.putDown(this.getObjectFromString(objName))); // ditto ^
+        commands.put("consider", personName -> System.out.println(this.getPersonFromString(personName).getName() + " : " + this.getPersonFromString(personName).healthLevel));
+        commands.put("get", objName -> this.player.pickUp(this.getObjectFromString(objName)));
+        commands.put("drop", objName -> this.player.putDown(this.getObjectFromString(objName)));
         commands.put("inventory", anyString -> System.out.println("Inventory: " + this.player.inventory));
         commands.put("eat", foodName -> this.player.consume(castAs(food.getClass(), this.getObjectFromString(foodName))));
         commands.put("options", anyString -> this.printCommandList());
-      //  commands.put("attack", personName -> this.player.attack(this.getPersonFromString(personName)));
+        commands.put("attack", personName -> this.player.attack(this.getPersonFromString(personName)));
         
         // Initializing Buildings
         Building mansion = new Building("Mansion", "Victor's Mansion");
@@ -116,7 +117,8 @@ public class GameLoop {
         this.buildings.add(mansion);
         this.buildings.add(woods);
 
-        lab.people.add(new Person("Me"));
+        lab.addPerson(new Person("Randall the Rando"));
+        lab.addPerson(new Person("Elizabeth"));
         livingRoom.items.add(new FoodObject("Test Object", "this is an item", 0, 0));
 
         // Initializing Player
@@ -126,11 +128,10 @@ public class GameLoop {
     }
 
     private void printCommandList() {
-        System.out.println("OPTIONS: ");
         for (String commandName : this.commands.keySet()) {
-            System.out.print(" | " + commandName);
+            System.out.print(commandName + " | ");
         }
-        System.out.println(" | quit |");
+        System.out.println("quit");
     }
 
     /**
@@ -236,7 +237,7 @@ public class GameLoop {
 
         // Game loop
         do {
-
+            System.out.println();
             System.out.print("Your move: ");
             String[] currentInput = input.nextLine().toLowerCase().split("\s+");
             
