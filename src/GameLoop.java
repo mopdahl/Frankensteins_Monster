@@ -24,12 +24,13 @@ public class GameLoop {
         // Initializing Commands
         commands.put("enter", destinationName -> this.enter(destinationName));
         commands.put("exit", buildingName -> this.player.exit(this.player.getCurrentBuilding())); // currently accepts any string after first word 'exit'
-        commands.put("look", anyString -> this.player.observeRoom(this.player.getCurrentRoom())); // placeholder
+        commands.put("look", objName -> this.look(objName)); // placeholder
         commands.put("get", objName -> this.player.pickUp(this.getObjectFromString(objName))); // edit Person.get to change currentRoom inventory
         commands.put("drop", objName -> this.player.putDown(this.getObjectFromString(objName))); // ditto ^
         commands.put("inventory", anyString -> System.out.println("Inventory: " + this.player.inventory));
         commands.put("eat", foodName -> this.player.consume(castAs(food.getClass(), this.getObjectFromString(foodName))));
-
+        commands.put("options", anyString -> this.printCommandList());
+      //  commands.put("attack", personName -> this.player.attack(this.getPersonFromString(personName)));
         
         // Initializing Buildings
         Building mansion = new Building("Mansion", "Victor's Mansion");
@@ -115,12 +116,33 @@ public class GameLoop {
         this.buildings.add(mansion);
         this.buildings.add(woods);
 
+        lab.people.add(new Person("Me"));
         livingRoom.items.add(new FoodObject("Test Object", "this is an item", 0, 0));
 
         // Initializing Player
 
         this.player = new Player("Frankie", mansion, lab);
         //this.player.currentRoom = lab; -> currentRoom is currently private
+    }
+
+    private void printCommandList() {
+        System.out.println("OPTIONS: ");
+        for (String commandName : this.commands.keySet()) {
+            System.out.print(" | " + commandName);
+        }
+        System.out.println(" | quit |");
+    }
+
+    /**
+     * Prints a description of the desired object.
+     * @param objName The name of the desired object
+     */    
+    private void look(String objName) {
+        if (objName.equals("around") || objName.equals("")) {
+            this.player.observeRoom(this.player.getCurrentRoom());
+        } else {
+            System.out.println(this.getObjectFromString(objName).description);
+        }
     }
 
     /**
@@ -151,6 +173,7 @@ public class GameLoop {
      * @return The location with the given name, as an Object
      */
     private Object getLocationFromString(String locationName) {
+        if (locationName.isEmpty()) {throw new RuntimeException("You need to have SOME PLACE in mind.");}
         // Check each Building to see if the name matches
         for (Building building : this.buildings) {
             if (building.getName().toLowerCase().equals(locationName)) {
@@ -169,6 +192,7 @@ public class GameLoop {
     }
 
     private GrabbableObject getObjectFromString(String objectName) {
+        if (objectName.isEmpty()) {throw new RuntimeException("You need to have SOMETHING in mind.");}
         for (GrabbableObject obj : this.player.inventory) {
             if (obj.name.toLowerCase().equals(objectName)) {
                 return obj;
@@ -180,8 +204,17 @@ public class GameLoop {
                 return obj;
             }
         }
-
         throw new RuntimeException("You don't see that here.");
+    }
+
+    private Person getPersonFromString(String personName) {
+        if (personName.isEmpty()) {throw new RuntimeException("You need to have SOMEONE in mind.");}
+        for (Person person : this.player.getCurrentRoom().people) {
+            if (person.getName().toLowerCase().equals(personName)) {
+                return person;
+            }
+        }
+        throw new RuntimeException("You don't see them here.");
     }
 
     private static <T> T castAs(Class<T> objClass, Object obj) {
@@ -199,7 +232,7 @@ public class GameLoop {
         boolean stillPlaying = true;
 
         System.out.println("Welcome to Draft #1!");
-        System.out.println("Type 'enter' to move between buildings or rooms, 'exit' to leave a building, or 'look' to see the description of the room you're in.\nType 'quit' to end the game.");
+        System.out.println("Type 'options' to see what you can do.");
 
         // Game loop
         do {
