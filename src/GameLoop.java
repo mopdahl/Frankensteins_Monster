@@ -165,8 +165,8 @@ public class GameLoop {
 
         boolean stillPlaying = true;
 
-        System.out.println("Welcome to Draft #1!\nYou are in Frankenstein's Lab, but can't go anywhere yet.");
-        System.out.println("Type 'enter' to repeat whatever you input, or 'look' to see the description of the room you're in.\nType 'quit' to end the game.");
+        System.out.println("Welcome to Draft #1!\nTo begin, 'enter mansion', then 'enter living room'.");
+        System.out.println("Type 'enter' to move between buildings or rooms, 'exit' to leave a building, or 'look' to see the description of the room you're in.\nType 'quit' to end the game.");
 
         // Game loop
         do {
