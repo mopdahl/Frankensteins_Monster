@@ -21,7 +21,8 @@ public class GameLoop {
     private void setUp() {
 
         // Initializing Commands
-        commands.put("enter", destinationName -> System.out.println(destinationName)); // placeholder
+        commands.put("enter", destinationName -> this.enter(destinationName));
+        commands.put("exit", buildingName -> this.player.exit(this.player.getCurrentBuilding())); // currently accepts any string after first word 'exit'
         commands.put("look", anyString -> System.out.println(this.player.getCurrentRoom().getDescription())); // placeholder
         
         // Initializing Buildings
@@ -112,6 +113,46 @@ public class GameLoop {
 
         this.player = new Person("Frankie");
         //this.player.currentRoom = lab; -> currentRoom is currently private
+    }
+
+    /**
+     * Moves the player from their current location to the Building or Room with the given name.
+     * @param destinationName The name of the desired location.
+     * @throws RuntimeException When there is no location with the given name.
+     */
+    private void enter(String destinationName) {
+        Object destination = this.getLocationFromString(destinationName);
+        if (destination instanceof Room destinationRoom) {
+            this.player.enter(destinationRoom);
+        } else if (destination instanceof Building destinationBuilding) {
+            this.player.enter(destinationBuilding);
+        } else {
+            throw new RuntimeException(destinationName + " is not an accessible location.");
+        }
+    }
+
+    /**
+     * Finds and returns the first instance of a Building or Room with the given name.
+     * @param locationName The name of the desired location
+     * @return The location with the given name, as an Object
+     */
+    private Object getLocationFromString(String locationName) {
+
+        // Check each Building to see if the name matches
+        for (Building building : this.buildings) {
+            if (building.getName().toLowerCase().equals(locationName)) {
+                return (Building) building;
+            }
+        }
+
+        // Check each currently accessible room (those in the current building)
+        for (ArrayList<Object> roomArray : this.player.getCurrentBuilding().rooms) {
+            if (roomArray.get(0).toString().toLowerCase().equals(locationName)) {
+                return (Room) roomArray.get(0);
+            }
+        }
+
+        throw new RuntimeException("Are you quite sure that's a place you could go?");
     }
 
     public static void main(String[] args) {
