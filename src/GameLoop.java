@@ -33,7 +33,7 @@ public class GameLoop {
         
         // Initializing Buildings
         Building mansion = new Building("Mansion", "Victor's Mansion");
-        Room lab = new Room("Laboratory", "This is victor's laboratory.", false);
+        Room lab = new Room("Laboratory", "This room contains a chaotic and eerie environment. It is dimly lit by the glow of a lantern as the blinds are shut. In the room there is a shelf where you see an assortment of scientific instruments. There is also paper scattered around the room on the floor.", false);
         Room victorsRoom = new Room("Victor's Bedroom", "This is Victor's Bedroom", false);
         Room kitchen = new Room("Kitchen", "This is Victor's Kitchen, he has assorted food laying around.", false);
         Room livingRoom = new Room("Living Room", "This is Victor's living room, he has assorted items in this room, perhaps CLUES.", true);
@@ -151,7 +151,6 @@ public class GameLoop {
      * @return The location with the given name, as an Object
      */
     private Object getLocationFromString(String locationName) {
-
         // Check each Building to see if the name matches
         for (Building building : this.buildings) {
             if (building.getName().toLowerCase().equals(locationName)) {
