@@ -6,7 +6,7 @@ import java.util.function.Consumer;
 
 public class GameLoop {
 
-    private Person player; // Convert to Player class later
+    private Player player; // Convert to Player class later
     private ArrayList<Building> buildings;
     private HashMap<String, Consumer<String>> commands;
 
@@ -24,7 +24,7 @@ public class GameLoop {
         // Initializing Commands
         commands.put("enter", destinationName -> this.enter(destinationName));
         commands.put("exit", buildingName -> this.player.exit(this.player.getCurrentBuilding())); // currently accepts any string after first word 'exit'
-        commands.put("look", anyString -> System.out.println(this.player.getCurrentRoom().items)); // placeholder
+        commands.put("look", anyString -> this.player.observeRoom(this.player.getCurrentRoom())); // placeholder
         commands.put("get", objName -> this.player.pickUp(this.getObjectFromString(objName))); // edit Person.get to change currentRoom inventory
         commands.put("drop", objName -> this.player.putDown(this.getObjectFromString(objName))); // ditto ^
         commands.put("inventory", anyString -> System.out.println("Inventory: " + this.player.inventory));
