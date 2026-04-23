@@ -19,11 +19,17 @@ public class GameLoop {
      * Method to initialize game variables. Includes commands, buildings, and the player.
      */
     private void setUp() {
+        FoodObject food = new FoodObject("food", "a piece of food", 0, 0); // placeholder: needed to get Class<Food> object 
 
         // Initializing Commands
         commands.put("enter", destinationName -> this.enter(destinationName));
         commands.put("exit", buildingName -> this.player.exit(this.player.getCurrentBuilding())); // currently accepts any string after first word 'exit'
-        commands.put("look", anyString -> System.out.println(this.player.getCurrentRoom().getDescription())); // placeholder
+        commands.put("look", anyString -> System.out.println(this.player.getCurrentRoom().items)); // placeholder
+        commands.put("get", objName -> this.player.pickUp(this.getObjectFromString(objName))); // edit Person.get to change currentRoom inventory
+        commands.put("drop", objName -> this.player.putDown(this.getObjectFromString(objName))); // ditto ^
+        commands.put("inventory", anyString -> System.out.println("Inventory: " + this.player.inventory));
+        commands.put("eat", foodName -> this.player.consume(castAs(food.getClass(), this.getObjectFromString(foodName))));
+
         
         // Initializing Buildings
         Building mansion = new Building("Mansion", "Victor's Mansion");
@@ -109,6 +115,8 @@ public class GameLoop {
         this.buildings.add(mansion);
         this.buildings.add(woods);
 
+        livingRoom.items.add(new FoodObject("Test Object", "this is an item", 0, 0));
+
         // Initializing Player
 
         this.player = new Person("Frankie");
@@ -153,6 +161,26 @@ public class GameLoop {
         }
 
         throw new RuntimeException("Are you quite sure that's a place you could go?");
+    }
+
+    private GrabbableObject getObjectFromString(String objectName) {
+        for (GrabbableObject obj : this.player.inventory) {
+            if (obj.name.toLowerCase().equals(objectName)) {
+                return obj;
+            }
+        }
+
+        for (GrabbableObject obj : this.player.currentRoom.items) {
+            if (obj.name.toLowerCase().equals(objectName)) {
+                return obj;
+            }
+        }
+
+        throw new RuntimeException("You don't see that here.");
+    }
+
+    private static <T> T castAs(Class<T> objClass, Object obj) {
+        return objClass.cast(obj);
     }
 
     public static void main(String[] args) {

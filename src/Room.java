@@ -9,7 +9,7 @@ public class Room implements RoomRequirements {
     private String description;
     public boolean hasExit;
     ArrayList<Person> people;
-    //ArrayList<GrabbableObject> items;
+    ArrayList<GrabbableObject> items;
     HashMap<Direction, Boolean> exits; // Possibly change the boolean value to a Door class later
 
 
@@ -18,7 +18,7 @@ public class Room implements RoomRequirements {
         this.description = description;
         this.hasExit = hasExit;
         this.people = new ArrayList<>();
-        // this.items = new ArrayList<>();
+        this.items = new ArrayList<>();
         this.exits = new HashMap<>();
     }
 
