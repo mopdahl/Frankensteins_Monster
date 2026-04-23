@@ -69,6 +69,10 @@ public class Person {
             return;
         } 
 
+        if (this.currentRoom == null){
+            this.currentRoom = desiredRoom;
+        }
+
         if (this.currentRoom == desiredRoom){
             System.out.println("You are already in this room!");
             return;
