@@ -6,8 +6,16 @@ public class Building implements BuildingRequirements {
     String name;
     String description;
     ArrayList<ArrayList<Object>> rooms;
+    String map;
 
     //Constructor
+
+    public Building(String name, String description, String map){
+        this.name = name;
+        this.description = description;
+        this.rooms = new ArrayList<>();
+        this.map = map;
+    }
 
     public Building(String name, String description) {
         this.name = name;
@@ -33,6 +41,10 @@ public class Building implements BuildingRequirements {
         for (int i = 0; i < buildingRooms.size(); i++) {
             System.out.println(i+1 + ": " + buildingRooms.get(i));
         }
+    }
+
+    public void printMap(){
+        System.out.println(this.map);
     }
 
     public String toString(){

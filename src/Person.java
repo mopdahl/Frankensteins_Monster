@@ -48,6 +48,11 @@ public class Person {
     public void enter(Building building) {
         if (this.currentBuilding == null){
             this.currentBuilding = building;
+            System.out.println("-------------------------");
+            System.out.println("Here is the list of possible rooms within " + building + ":");
+            building.printMap();
+            System.out.println("-------------------------"); 
+            System.out.println("You are currently in " + this.currentRoom);
         } else {
             System.out.println("You are currently in a building, please exit it first before entering another building.");
         }
@@ -110,16 +115,24 @@ public class Person {
 
         // Checks to see if row is within +- 1.
         if ((currentRowPlus == desiredRow && currentColumn == desiredColumn) || (currentRowMinus == desiredRow && currentColumn == desiredColumn)) {
-            this.currentRoom = desiredRoom;
-            System.out.println("You have entered " + desiredRoom);
+            if (!desiredRoom.isLocked){
+                this.currentRoom = desiredRoom;
+                System.out.println("You have entered " + desiredRoom);
+            } else {
+                System.out.println("The doorknob is jammed, perhaps it's locked");
+            }
         } else {
             int currentColumnPlus = currentColumn + 1;
             int currentColumnMinus = currentColumn - 1;
 
             //checks to see if column is within +-1.
             if ((currentRow == desiredRow && currentColumnPlus == desiredColumn) || (currentRow == desiredRow && currentColumnMinus == desiredColumn)) {
-                this.currentRoom = desiredRoom;
-                System.out.println("You have entered " + desiredRoom);
+                if (!desiredRoom.isLocked){
+                    this.currentRoom = desiredRoom;
+                    System.out.println("You have entered " + desiredRoom);
+                } else {
+                    System.out.println("The doorknob is jammed, perhaps it's locked");
+                }
 
                 } else {
                     // This will be a runtime exception eventually I believe,
@@ -153,11 +166,6 @@ public class Person {
         }
     }
 
-    public void respondToAttack(){
-
-
-    }
-
     public void pickUp(GrabbableObject object){
         if (!this.inventory.contains(object)){
             if (this.inventory.size() < this.inventoryLimit){
@@ -182,12 +190,14 @@ public class Person {
             System.out.println(object + " is not in your inventory.");
         }
     }
-    
 
     public void consume(FoodObject food){
         if (this.inventory.contains(food)){
             // In the future we can have maybe rankings for food? For like how much health it gives the player?
             this.healthLevel += food.healthBoost;
+            if (!(food.foodReview == null)){
+                System.out.println(food.foodReview);
+            }
             // Removes food item from inventory
             this.inventory.remove(food);
         } else {

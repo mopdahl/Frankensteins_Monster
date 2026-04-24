@@ -19,7 +19,7 @@ public class GameLoop {
      * Method to initialize game variables. Includes commands, buildings, and the player.
      */
     private void setUp() {
-        FoodObject food = new FoodObject("food", "a piece of food", 0, 0); // placeholder: needed to get Class<Food> object 
+        FoodObject food = new FoodObject("food", "a piece of food", 0, 0, "NA"); // placeholder: needed to get Class<Food> object 
 
         // Initializing Commands
         commands.put("enter", destinationName -> this.enter(destinationName));
@@ -32,13 +32,29 @@ public class GameLoop {
         commands.put("eat", foodName -> this.player.consume(castAs(food.getClass(), this.getObjectFromString(foodName))));
         commands.put("options", anyString -> this.printCommandList());
         commands.put("attack", personName -> this.player.attack(this.getPersonFromString(personName)));
+        commands.put("unlock", destinationName -> this.player.unlockRoom((Room) this.getRoomFromString(destinationName)));
+        commands.put("map", misc -> this.player.currentBuilding.printMap());
         
         // Initializing Buildings
-        Building mansion = new Building("Mansion", "Victor's Mansion");
+        Building mansion = new Building("Mansion", "Victor's Mansion", """
+-----------------------------------
+|                |                |
+|                |                |
+|  Laboratory    | Frankenstein's |
+|                |      Room      |
+|                |                |
+-----------------------------------
+|                |                |
+|                |                |
+|    Kitchen     |   Living Room  |
+|                |                |
+|                |                |
+-----------------------------------
+""");
         Room lab = new Room("Laboratory", "This room contains a chaotic and eerie environment. It is dimly lit by the glow of a lantern as the blinds are shut. In the room there is a shelf where you see an assortment of scientific instruments. There is also paper scattered around the room on the floor.", false);
-        Room victorsRoom = new Room("Victor's Bedroom", "This is Victor's Bedroom", false);
-        Room kitchen = new Room("Kitchen", "This is Victor's Kitchen, he has assorted food laying around.", false);
-        Room livingRoom = new Room("Living Room", "This is Victor's living room, he has assorted items in this room, perhaps CLUES.", true);
+        Room frankensteinsRoom = new Room("Frankenstein's Bedroom", "As you enter this room, you are met with an immediate stench.\nThere is an unmade bed and various mugs by the bedside table.\nOn the bed lies a book.", false);
+        Room kitchen = new Room("Kitchen", "This spacious area is adorned with a dark oak dining table.\nOn it is a basket of assorted fruits.\nThere is an icebox off to the side.", false);
+        Room livingRoom = new Room("Living Room", "This area sure looks tenebrous. There is a dank smell in this room, the ceiling of the room seems to be falling apart.\nAn ominous air looms over.\nYou see a door.", true);
 
         // Woods creation:
 
@@ -49,7 +65,7 @@ public class GameLoop {
 
         // Mansion ArrayLists:
         ArrayList<Object> labCoordinates = new ArrayList<>();
-        ArrayList<Object> victorsRoomCoordinates = new ArrayList<>();
+        ArrayList<Object> frankensteinsRoomCoordinates = new ArrayList<>();
         ArrayList<Object> kitchenCoordinates = new ArrayList<>();
         ArrayList<Object> livingRoomCoordinates = new ArrayList<>();
 
@@ -75,9 +91,9 @@ public class GameLoop {
         i = 0;
         j = 1;
 
-        victorsRoomCoordinates.add(victorsRoom);
-        victorsRoomCoordinates.add(i);
-        victorsRoomCoordinates.add(j);
+        frankensteinsRoomCoordinates.add(frankensteinsRoom);
+        frankensteinsRoomCoordinates.add(i);
+        frankensteinsRoomCoordinates.add(j);
 
         woods2Coordinates.add(woods2);
         woods2Coordinates.add(i);
@@ -106,7 +122,7 @@ public class GameLoop {
 
 
         mansion.rooms.add(labCoordinates);
-        mansion.rooms.add(victorsRoomCoordinates);
+        mansion.rooms.add(frankensteinsRoomCoordinates);
         mansion.rooms.add(kitchenCoordinates);
         mansion.rooms.add(livingRoomCoordinates);
 
@@ -117,14 +133,36 @@ public class GameLoop {
         this.buildings.add(mansion);
         this.buildings.add(woods);
 
-        lab.addPerson(new Person("Randall the Rando"));
+        // lab.addPerson(new Person("Randall the Rando"));
         lab.addPerson(new Person("Elizabeth"));
-        livingRoom.items.add(new FoodObject("Test Object", "this is an item", 0, 0));
+        // livingRoom.items.add(new FoodObject("Test Object", "this is an item", 0, 0,"NA"));
+
 
         // Initializing Player
-
         this.player = new Player("Frankie", mansion, lab);
         //this.player.currentRoom = lab; -> currentRoom is currently private
+
+        // Initializing objects in rooms
+
+        // Laboratory
+        lab.items.add(new Weapon("Syringe", "This looks like its got some junk in it, but it's sharp.", 0, 5));
+        lab.items.add(new GrabbableObject("Document", "There is some various scribbles on this paper, \nthere is a drawing of something in vague resemblance of the person you saw right before you woke up.", 0));
+
+        // Kitchen 
+        GrabbableObject key = (new GrabbableObject("Key", "A key, perhaps it opens a door in this building?", 0));
+        kitchen.items.add(key);
+        kitchen.items.add(new FoodObject("Bread", "It looks half-eaten and has a hard outer shell.", 5, 10, "Well, that was nasty!"));
+        kitchen.items.add(new FoodObject("Salted Pork", "A suspicious smell is coming from this meat", 5, -10, "BLEGH BLEGH BLEGH!"));
+        kitchen.items.add(new FoodObject("Squab", "This seems gourmet...", 5, 15, "Wow... that was DELICIOUS!"));
+
+        // Victor's Bedroom
+        frankensteinsRoom.items.add(new Book("Frankenstein's Super Secret Diary", "Suspicious stains adorn the pages of this book", 10, "Today is the day that the creature I create come to life. \nI sure hope this creature isn't evil when it awakes. \nIf it is, I am running off to a boat off in the ocean on the coast of the deep woods."));
+
+
+        // Final room adjustments
+        frankensteinsRoom.lockRoom();
+        frankensteinsRoom.assignKey(key);
+
     }
 
     private void printCommandList() {
@@ -140,6 +178,7 @@ public class GameLoop {
      */    
     private void look(String objName) {
         if (objName.equals("around") || objName.equals("")) {
+            System.out.println("You are in the " + this.player.currentRoom + ".");
             this.player.observeRoom(this.player.getCurrentRoom());
         } else {
             System.out.println(this.getObjectFromString(objName).description);
@@ -157,16 +196,11 @@ public class GameLoop {
             this.player.enter(destinationRoom);
         } else if (destination instanceof Building destinationBuilding) {
             this.player.enter(destinationBuilding);
-            // Shows what rooms is existant.
-            // I might move everything to the building class later on so it's not that compacted in here.
-            System.out.println("-------------------------");
-            System.out.println("Here is the list of possible rooms within " + destinationBuilding + ":");
-            destinationBuilding.getRooms();
-            System.out.println("-------------------------"); 
         } else {
             throw new RuntimeException(destinationName + " is not an accessible location.");
         }
     }
+
 
     /**
      * Finds and returns the first instance of a Building or Room with the given name.
@@ -191,6 +225,20 @@ public class GameLoop {
 
         throw new RuntimeException("Are you quite sure that's a place you could go?");
     }
+
+    private Object getRoomFromString(String locationName) {
+        if (locationName.isEmpty()) {throw new RuntimeException("You need to have SOME PLACE in mind.");}
+            for (int i = 0; i < this.buildings.size(); i++){
+                Building building = this.buildings.get(i);
+                for (i = 0; i < building.rooms.size(); i++){
+                    Room room = (Room) building.rooms.get(i).get(0);
+                    if (room.getName().toLowerCase().equals(locationName)){
+                        return room;
+                    }
+                }
+            }
+        return null;
+        }
 
     private GrabbableObject getObjectFromString(String objectName) {
         if (objectName.isEmpty()) {throw new RuntimeException("You need to have SOMETHING in mind.");}
@@ -231,21 +279,21 @@ public class GameLoop {
         Scanner input = new Scanner(System.in);
 
         boolean stillPlaying = true;
-
-        System.out.println("Welcome to Draft #1!");
-        System.out.println("Type 'options' to see what you can do.");
+        System.out.println("\n || Welcome to FRANKENSTEIN'S MONSTER || ");
+        System.out.println("\nYou are violently shaken awake and as you open your eyes, you see a figure run away.\nYour body is stiff, it's almost as if it's the first time you've ever moved.\nYou don't have any clothes on or anything on you.\nWHO are you?");
+        System.out.println("\nTo found out, type 'options' to see what you can do.");
 
         // Game loop
         do {
             System.out.println();
-            System.out.print("Your move: ");
+            System.out.print("Input: ");
             String[] currentInput = input.nextLine().toLowerCase().split("\s+");
             
             // The first word of the input
             String mainCommand = currentInput[0];
             // The remaining words of the input
             String commandParameter = String.join(" ", Arrays.copyOfRange(currentInput, 1, currentInput.length));
-
+             
             // If user input is a game command, try implementing the command
             if (game.commands.containsKey(mainCommand)) {
                 try {

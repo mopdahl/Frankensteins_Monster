@@ -38,10 +38,20 @@ public class Player extends Person {
 
     }
     public void read(Book book){
-        if (this.canRead == true){
+        if (this.canRead){
             System.out.println(book.getText());
         }
     }
+
+    public void unlockRoom(Room destinationName){
+        if (this.inventory.contains(destinationName.getKey())){
+            destinationName.unlock();
+        } else {
+            System.out.println("You don't have the key to unlock this room.");
+        }
+
+    }
+
 
     }
 

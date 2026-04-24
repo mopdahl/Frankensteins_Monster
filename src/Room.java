@@ -8,6 +8,8 @@ public class Room implements RoomRequirements {
     private String name;
     private String description;
     public boolean hasExit;
+    boolean isLocked;
+    private GrabbableObject key;
     ArrayList<Person> people;
     ArrayList<GrabbableObject> items;
     HashMap<Direction, Boolean> exits; // Possibly change the boolean value to a Door class later
@@ -17,6 +19,8 @@ public class Room implements RoomRequirements {
         this.name = name;
         this.description = description;
         this.hasExit = hasExit;
+        this.isLocked = false;
+        this.key = null;
         this.people = new ArrayList<>();
         this.items = new ArrayList<>();
         this.exits = new HashMap<>();
@@ -57,6 +61,22 @@ public class Room implements RoomRequirements {
         if (this.items.contains(item)) {
             this.items.remove(item);
         }
+    }
+
+    public void lockRoom(){
+        this.isLocked = true;
+    }
+
+    public void unlock(){
+        this.isLocked = false;
+    }
+
+    public GrabbableObject getKey(){
+        return this.key;
+    }
+
+    public void assignKey(GrabbableObject key){
+        this.key = key;
     }
 
     public static void main(String[] args) {
