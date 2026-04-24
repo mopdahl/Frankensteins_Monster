@@ -1,33 +1,31 @@
 //import java.util.ArrayList
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
 public class Room implements RoomRequirements {
     
     private String name;
     private String description;
-    public boolean hasExit;
+    public Room exit;
     boolean isLocked;
     private GrabbableObject key;
     ArrayList<Person> people;
     ArrayList<GrabbableObject> items;
-    HashMap<Direction, Boolean> exits; // Possibly change the boolean value to a Door class later
+    Building building;
 
-
-    public Room(String name, String description, boolean hasExit) {
+    public Room(String name, String description, Room exit, Building building) {
         this.name = name;
         this.description = description;
-        this.hasExit = hasExit;
+        this.exit = exit;
         this.isLocked = false;
         this.key = null;
         this.people = new ArrayList<>();
         this.items = new ArrayList<>();
-        this.exits = new HashMap<>();
+        this.building = building;
     }
 
     public Room() {
-        this("An Empty Room", "This room is empty.", false);
+        this("An Empty Room", "This room is empty.", null, null);
     }
 
     public String getName() {

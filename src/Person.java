@@ -48,6 +48,7 @@ public class Person {
     public void enter(Building building) {
         if (this.currentBuilding == null){
             this.currentBuilding = building;
+           // this.enter((Room) building.rooms.get(0).get(0));
             System.out.println("-------------------------");
             System.out.println("Here is the list of possible rooms within " + building + ":");
             building.printMap();
@@ -144,10 +145,10 @@ public class Person {
 
     public void exit(Building building) {
         if (this.currentBuilding == building){
-            if (this.currentRoom.hasExit == true){
+            if (this.currentRoom.exit != null){
                 this.previouslyEnteredBuilding = building;
-                this.currentBuilding = null;
-                this.currentRoom = null;
+                this.currentRoom = this.currentRoom.exit;
+                this.currentBuilding = this.currentRoom.building;
                 System.out.println("You have exited " + building);
             } else {
                 System.out.println("The room you are currently in does not have an exit.");
