@@ -1,17 +1,25 @@
 public class Player extends Person {
 
     Boolean canRead;
+    Room spawnPoint;
 
     public Player(String name, Building building, Room room) {
         super(name);
         this.canRead = false;
         this.currentBuilding = building;
         this.currentRoom = room;
+        this.spawnPoint = room;
     }
 
     public void respawn(){
-        if (this.alive == false){
+        if (!this.alive) {
             this.alive = true;
+            this.inventory.clear();
+            this.inventoryWeight = 0;
+            this.currentBuilding = this.spawnPoint.building;
+            this.currentRoom = this.spawnPoint;
+            System.out.println("You have died!");
+            System.out.println("Perhaps you can put yourself together again..."); // write a new prompt later
         } else {
             System.out.println("You are still alive.");
         }
@@ -52,6 +60,10 @@ public class Player extends Person {
 
     }
 
+    public void die() {
+        super.die();
+        this.respawn();
+    }
 
     }
 

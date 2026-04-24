@@ -10,6 +10,7 @@ public class Person {
     protected int healthLevel;
     protected ArrayList<GrabbableObject> inventory;
     protected int inventoryWeight;
+    protected int inventoryWeightLimit;
     protected int inventoryLimit;
     protected boolean alive;
 
@@ -22,6 +23,7 @@ public class Person {
         this.healthLevel = 100;
         this.inventory = new ArrayList<>();
         this.inventoryLimit = 10;
+        this.inventoryWeightLimit = 40;
         this.inventoryWeight = 0;
         this.alive = true;
     }
@@ -42,13 +44,20 @@ public class Person {
         return this.healthLevel;
     }
 
+    public void changeHealthLevel(int increment) {
+        this.healthLevel += increment;
+        if (this.healthLevel <= 0) {
+            this.die();
+        }
+    }
+
     public String getName(){
         return this.name;
     }
     public void enter(Building building) {
         if (this.currentBuilding == null){
             this.currentBuilding = building;
-           // this.enter((Room) building.rooms.get(0).get(0));
+            this.enter((Room)building.rooms.get(1).get(1));
             System.out.println("-------------------------");
             System.out.println("Here is the list of possible rooms within " + building + ":");
             building.printMap();
@@ -162,18 +171,24 @@ public class Person {
         if (person.currentRoom == this.currentRoom){
             //in the future we probably want a different health level change if the person is holding a weapon
             // also maybe in the future if the person being attacked has armor?
-            person.healthLevel -= 10;
-
+            int healthChange = 10;
+            person.changeHealthLevel(-healthChange);
+           // person.respondToAttack();
         }
     }
+
 
     public void pickUp(GrabbableObject object){
         if (!this.inventory.contains(object)){
             if (this.inventory.size() < this.inventoryLimit){
-                this.inventory.add(object);
-                // Probably need a separate conditional for this.
-                this.inventoryWeight += object.weight;
-                this.getCurrentRoom().removeItem(object);
+                if (this.inventoryWeight + object.weight <= this.inventoryWeightLimit) {
+                    this.inventory.add(object);
+                    this.inventoryWeight += object.weight;
+                    this.getCurrentRoom().removeItem(object);
+                } else {
+                    System.out.println("You cannot carry that much weight.");
+                }
+
             } else {
                 System.out.println("Your inventory is full.");
             }
@@ -195,16 +210,31 @@ public class Person {
     public void consume(FoodObject food){
         if (this.inventory.contains(food)){
             // In the future we can have maybe rankings for food? For like how much health it gives the player?
-            this.healthLevel += food.healthBoost;
             if (!(food.foodReview == null)){
                 System.out.println(food.foodReview);
             }
             // Removes food item from inventory
             this.inventory.remove(food);
+            this.changeHealthLevel(food.healthBoost);
         } else {
             System.out.println("You do not possess this item.");
         }
     }
+
+    protected void die() {
+        this.alive = false;
+        this.currentRoom.removePerson(this);
+        for (GrabbableObject obj : this.inventory) {
+            this.currentRoom.addItem(obj);
+        }
+        this.currentRoom.addItem(new GrabbableObject("The corpse of " + this.name, "It is the mutilated body of " + this.name + ".", 40));
+    }
+
+    // public void respondToAttack() {
+    //     if (this.getHealthLevel() <= 0) {
+    //         this.die();
+    //     }
+    // }
 
     public String toString() {
         return this.name;
