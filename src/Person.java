@@ -13,6 +13,7 @@ public class Person {
     protected int inventoryWeightLimit;
     protected int inventoryLimit;
     protected boolean alive;
+    protected GrabbableObject heldItem;
 
     //Constructor
     public Person(String name){
@@ -26,6 +27,7 @@ public class Person {
         this.inventoryWeightLimit = 40;
         this.inventoryWeight = 0;
         this.alive = true;
+        this.heldItem = null;
     }
 
     public Person(){
@@ -54,6 +56,11 @@ public class Person {
     public String getName(){
         return this.name;
     }
+
+    public String showStats() {
+        return (this.name + " | hitpoints: " + this.getHealthLevel() + " | holding: " + this.heldItem);
+    }
+
     public void enter(Building building) {
         if (this.currentBuilding == null){
             this.currentBuilding = building;
@@ -172,8 +179,31 @@ public class Person {
             //in the future we probably want a different health level change if the person is holding a weapon
             // also maybe in the future if the person being attacked has armor?
             int healthChange = 10;
+            if (this.heldItem instanceof Weapon w) {healthChange += w.damage;}
             person.changeHealthLevel(-healthChange);
            // person.respondToAttack();
+        }
+    }
+
+    public void hold(GrabbableObject object) {
+        if (this.inventory.contains(object)) {
+            if (this.heldItem != object) {
+                this.heldItem = object;
+                System.out.println("You start using " + object + ".");
+            } else {
+                throw new RuntimeException("You are already using " + object + ".");
+            }
+        } else {
+            throw new RuntimeException("You must be get " + object + " before you can hold it.");
+        }
+    }
+
+    public void putAway(GrabbableObject object) {
+        if (this.heldItem == object) {
+            this.heldItem = null;
+            System.out.println("You stop using " + object + ".");
+        } else {
+            throw new RuntimeException("You must be holding " + object + " before you put it away.");
         }
     }
 
@@ -185,6 +215,7 @@ public class Person {
                     this.inventory.add(object);
                     this.inventoryWeight += object.weight;
                     this.getCurrentRoom().removeItem(object);
+                    System.out.println("You get " + object + ".");
                 } else {
                     System.out.println("You cannot carry that much weight.");
                 }
@@ -199,9 +230,11 @@ public class Person {
 
     public void putDown(GrabbableObject object){
         if (this.inventory.contains(object)){
+            if (this.heldItem == object) {this.putAway(object);}
             this.inventory.remove(object);
             this.inventoryWeight -= object.weight;
             this.getCurrentRoom().addItem(object);
+            System.out.println("You drop " + object + ".");
         } else {
             System.out.println(object + " is not in your inventory.");
         }

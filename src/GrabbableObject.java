@@ -18,6 +18,10 @@ public class GrabbableObject {
         this("An Object", "This is an object.");
     }
 
+    public void use(Person user) {
+        System.out.println("How exactly do you intend to use " + this.name + "?");
+    }
+
     public String toString() {
         return this.name;
     }

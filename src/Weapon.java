@@ -7,4 +7,15 @@ public class Weapon extends GrabbableObject {
         this.damage = damage;
     }
     
+    /**
+     * If the Person is wielding the weapon, removes it. Otherwise the Person wields the weapon.
+     * @param user The Person using the Weapon.
+     */
+    public void use(Person user) {
+        if (user.heldItem == this) {
+            user.putAway(this);
+        } else {
+            user.hold(this);
+        }
+    }
 }
