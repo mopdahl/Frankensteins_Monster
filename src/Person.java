@@ -113,38 +113,8 @@ public class Person {
             return;
         }
 
-        // Get current room row, column:
-        for (int i = 0; i <= this.currentBuilding.rooms.size(); i++){
-            if (this.currentRoom.equals(this.currentBuilding.rooms.get(i).get(0))){
-                Object x = this.currentBuilding.rooms.get(i).get(1);
-                Object y = this.currentBuilding.rooms.get(i).get(2);
-
-                currentRow = Integer.parseInt(x.toString());
-                currentColumn = Integer.parseInt(y.toString());
-                break;
-            }
-        }
-
-        // current desired room row, column
-        for (int i = 0; i <= this.currentBuilding.rooms.size(); i++){
-            if (desiredRoom.equals(this.currentBuilding.rooms.get(i).get(0))){
-                Object desiredRoomRow = this.currentBuilding.rooms.get(i).get(1);
-                Object desiredRoomColumn = this.currentBuilding.rooms.get(i).get(2);
-
-                desiredRow = Integer.parseInt(desiredRoomRow.toString());
-                desiredColumn = Integer.parseInt(desiredRoomColumn.toString());    
-                break;
-            } 
-        }
-
-        // do the implementation of whether or not the player has the ability to even enter desired room
-        // check within distance, jMinus and jPlus
-
-        int currentRowPlus = currentRow + 1;
-        int currentRowMinus = currentRow - 1;
-
         // Checks to see if row is within +- 1.
-        if ((currentRowPlus == desiredRow && currentColumn == desiredColumn) || (currentRowMinus == desiredRow && currentColumn == desiredColumn)) {
+        if (this.isAdjacentTo(desiredRoom)) {
             if (!desiredRoom.isLocked){
                 this.currentRoom = desiredRoom;
                 System.out.println("You have entered " + desiredRoom);
@@ -152,23 +122,7 @@ public class Person {
                 System.out.println("The doorknob is jammed, perhaps it's locked. You would need a key to enter.");
             }
         } else {
-            int currentColumnPlus = currentColumn + 1;
-            int currentColumnMinus = currentColumn - 1;
-
-            //checks to see if column is within +-1.
-            if ((currentRow == desiredRow && currentColumnPlus == desiredColumn) || (currentRow == desiredRow && currentColumnMinus == desiredColumn)) {
-                if (!desiredRoom.isLocked){
-                    this.currentRoom = desiredRoom;
-                    System.out.println("You have entered " + desiredRoom);
-                } else {
-                    System.out.println("The doorknob is jammed, perhaps it's locked. You would need a key to enter.");
-                }
-
-                } else {
-                    // This will be a runtime exception eventually I believe,
-                    // Later on maybe implement a "This room does not even exist" exception.
-                    System.out.println("You are not next to this room, you cannot enter this room.");
-                }
+            System.out.println("You are not next to this room, you cannot enter it.");
             }
     }
 
@@ -284,6 +238,59 @@ public class Person {
 
     public String toString() {
         return this.name;
+    }
+
+    public boolean isAdjacentTo(Room desiredRoom){
+
+        int desiredRow = 0;
+        int desiredColumn = 0;
+        int currentRow = 0;
+        int currentColumn = 0;
+
+        // Get current room row, column:
+        for (int i = 0; i <= this.currentBuilding.rooms.size(); i++){
+            if (this.currentRoom.equals(this.currentBuilding.rooms.get(i).get(0))){
+                Object x = this.currentBuilding.rooms.get(i).get(1);
+                Object y = this.currentBuilding.rooms.get(i).get(2);
+
+                currentRow = Integer.parseInt(x.toString());
+                currentColumn = Integer.parseInt(y.toString());
+                break;
+            }
+        }
+
+        // current desired room row, column
+        for (int i = 0; i <= this.currentBuilding.rooms.size(); i++){
+            if (desiredRoom.equals(this.currentBuilding.rooms.get(i).get(0))){
+                Object desiredRoomRow = this.currentBuilding.rooms.get(i).get(1);
+                Object desiredRoomColumn = this.currentBuilding.rooms.get(i).get(2);
+
+                desiredRow = Integer.parseInt(desiredRoomRow.toString());
+                desiredColumn = Integer.parseInt(desiredRoomColumn.toString());    
+                break;
+            } 
+        }
+
+        // do the implementation of whether or not the player has the ability to even enter desired room
+        // check within distance, jMinus and jPlus
+
+        int currentRowPlus = currentRow + 1;
+        int currentRowMinus = currentRow - 1;
+
+        // Checks to see if row is within +- 1.
+        if ((currentRowPlus == desiredRow && currentColumn == desiredColumn) || (currentRowMinus == desiredRow && currentColumn == desiredColumn)) {
+            return true;
+        } else {
+            int currentColumnPlus = currentColumn + 1;
+            int currentColumnMinus = currentColumn - 1;
+
+            //checks to see if column is within +-1.
+            if ((currentRow == desiredRow && currentColumnPlus == desiredColumn) || (currentRow == desiredRow && currentColumnMinus == desiredColumn)) {
+                return true;
+                } else {
+                    return false;
+                }
+            }
     }
 
 }

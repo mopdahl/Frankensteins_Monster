@@ -53,7 +53,12 @@ public class Player extends Person {
 
     public void unlockRoom(Room destinationName){
         if (this.inventory.contains(destinationName.getKey())){
-            destinationName.unlock();
+            if (this.isAdjacentTo(destinationName)){
+                destinationName.unlock();
+                System.out.println("You have unlocked " + destinationName);
+            } else {
+                System.out.println("You are not next to this room to unlock it.");
+            }
         } else {
             System.out.println("You don't have the key to unlock this room.");
         }

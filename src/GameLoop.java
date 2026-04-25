@@ -42,7 +42,7 @@ public class GameLoop {
 |                |                |
 |                |                |
 |  Laboratory    | Frankenstein's |
-|                |      Room      |
+|                |    Bedroom     |
 |                |                |
 -----------------------------------
 |                |                |
@@ -54,7 +54,7 @@ public class GameLoop {
 """);
         Room lab = new Room("Laboratory", "This room contains a chaotic and eerie environment. It is dimly lit by the glow of a lantern as the blinds are shut.\nIn the room there is a shelf where you see an assortment of scientific instruments. There is also paper scattered around the room on the floor.", null, mansion);
         Room victorsRoom = new Room("Frankenstein's Bedroom", "As you enter this room, you are met with an immediate stench.\nThere is an unmade bed and various mugs by the bedside table.\nOn the bed lies a book.", null, mansion);
-        Room kitchen = new Room("Kitchen", "This spacious area is adorned with a dark oak dining table.\nOn it is a basket of assorted fruits.\nThere is an icebox off to the side.", null, mansion);
+        Room kitchen = new Room("Kitchen", "This spacious area is adorned with a dark oak dining table.\nOn the table is a basket of assorted fruits.\nThere is an icebox off to the side.", null, mansion);
         Room livingRoom = new Room("Living Room", "This area sure looks tenebrous. There is a dank smell in this room, the ceiling of the room seems to be falling apart.\nAn ominous air looms over.\nYou see a door.", null, mansion);
 
         // Cottage Creation:
