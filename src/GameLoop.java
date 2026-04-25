@@ -37,28 +37,105 @@ public class GameLoop {
         
         // Initializing Buildings
         // Mansion creation
-        Building mansion = new Building("Mansion", "Victor's Mansion");
-        Room lab = new Room("Laboratory", "This is victor's laboratory.", null, mansion);
-        Room victorsRoom = new Room("Victor's Bedroom", "This is Victor's Bedroom", null, mansion);
-        Room kitchen = new Room("Kitchen", "This is Victor's Kitchen, he has assorted food laying around.", null, mansion);
-        Room livingRoom = new Room("Living Room", "This is Victor's living room, he has assorted items in this room, perhaps CLUES.", null, mansion);
+        Building mansion = new Building("Mansion", "Frankenstein's Mansion", """
+-----------------------------------
+|                |                |
+|                |                |
+|  Laboratory    | Frankenstein's |
+|                |      Room      |
+|                |                |
+-----------------------------------
+|                |                |
+|                |                |
+|    Kitchen     |   Living Room  |
+|                |    (has exit)  |
+|                |                |
+-----------------------------------
+""");
+        Room lab = new Room("Laboratory", "This room contains a chaotic and eerie environment. It is dimly lit by the glow of a lantern as the blinds are shut.\nIn the room there is a shelf where you see an assortment of scientific instruments. There is also paper scattered around the room on the floor.", null, mansion);
+        Room victorsRoom = new Room("Frankenstein's Bedroom", "As you enter this room, you are met with an immediate stench.\nThere is an unmade bed and various mugs by the bedside table.\nOn the bed lies a book.", null, mansion);
+        Room kitchen = new Room("Kitchen", "This spacious area is adorned with a dark oak dining table.\nOn it is a basket of assorted fruits.\nThere is an icebox off to the side.", null, mansion);
+        Room livingRoom = new Room("Living Room", "This area sure looks tenebrous. There is a dank smell in this room, the ceiling of the room seems to be falling apart.\nAn ominous air looms over.\nYou see a door.", null, mansion);
 
         // Cottage Creation:
-        Building cottage = new Building("Cottage", "This is the cottage where M. De Lacey, Felix, Agatha, and Safie reside.");
-        Room monstersDwelling = new Room("Monster's Dwelling", "This is where the player will be able to rest during their time at the cottage.", null, cottage);
-        Room mainRoom = new Room("Main Living Space", "The main living room", null, cottage);
+        Building cottage = new Building("Cottage", "This is the cottage where M. De Lacey, Felix, Agatha, and Safie reside.", """
+-----------------------------------
+|                |                |
+|                |                |
+| Your Dwelling  |  Main Cottage  |
+|  (has exit)    |                |
+|                |                |
+-----------------------------------
+
+        """);
+        Room monstersDwelling = new Room("My Dwelling", "You find yourself in the hovel next to the cottage.\nYou find yourself comfortable among the rats and cockroaches that roam around.\nAround you see you various farming tools.", null, cottage);
+        Room mainRoom = new Room("Main Cottage", "This is the cottage where M. De Lacey, Felix, Agatha, and Safie reside.", null, cottage);
 
         // Ship creation:
-        Building ship = new Building("Ship", "This is the ship where you may find some enemies, but Frankenstein lies here.");
-        Room deck = new Room("Deck", "A bunch of sailors are here...", null, ship);
+        Building ship = new Building("Ship", "This is the ship where you may find some enemies, but Frankenstein lies here.", """
+-----------------------------------
+|                |                |
+|                |                |
+|      Deck      |      Cabin     |
+|   (has exit)   |                |
+|                |                |
+----------------------------------- 
+                 |                |
+                 |                |
+                 |     Room       |
+                 |                |
+                 |                |
+                 ------------------
+
+        """);
+        Room deck = new Room("Deck", "A bunch of sailors are here...They don't seem very nice.\nThey ", null, ship);
         Room cabin = new Room("Cabin", "This area consists of a lot of rooms, however you want to venture into Frankenstein's room.", null, ship);
         Room room = new Room("Ship Room 001", "There is a bed with a frail figure laying in it, who could it be?", null, ship);
 
                 // Woods creation:
-        Building woods = new Building("Woods", "This is the woods, there is a lot to explore here.");
-        Room woods1 = new Room("Beginning Woods", "This is a section of the woods just outside of the Frankenstein Mansion.", livingRoom, woods);
-        Room woods2 = new Room("Middle Woods", "You have travelled from the beginning woods into a deeper part of the woods. You see a cottage in the far distance.", monstersDwelling, woods);
-        Room woods3 = new Room("Deep woods", "You are deep into the woods, far away you can see the ocean and ship.", deck, woods);
+        Building woods = new Building("Woods", "This is the woods, there is a lot to explore here.", """
+
+------------------
+|                |
+|                |
+|     Mansion    |  
+|                | 
+|                |
+------------------
+       | |
+       | |
+       | |
+       | |
+       | |
+       | |
+       | |   
+------------------------------------------------------
+|                |                |                  |                  
+|                |                |                  |-------------
+| Beginning Woods|     Middle     |      Deep        |---------|  |
+|                |      Woods     |      Woods       |         |  |
+|                |                |                  |         |  |
+------------------------------------------------------         |  |
+                            | |                                |  |
+                            | |                                |  |     |-----
+                            | |                                |  |     |     -----
+                            | |                                |  |     |          ----
+                            | |                                |  |     |     -----
+                            | |                                |  |     |-----
+                            | |                                |  |     |
+                    ------------------                    ------------------
+                    |                |                    |                |
+                    |                |                    |                |
+                    |     Cottage    |                    |      Ship      |  
+                    |                |                    |                |
+                    |                |                    |                |
+                    ------------------                     ----------------
+
+
+        """);
+        Room woods1 = new Room("Beginning Woods", "This is a section of the woods just outside of the Frankenstein Mansion.\nAround you see a pile of what seems like fabric- left by hunters?\nYou see a hawk on a tree staring at you disturbingly.\nYou see a creature that is eating away at some corpse of an wild animal.", livingRoom, woods);
+        Room woods2 = new Room("Middle Woods", "You have travelled from the beginning woods into a deeper part of the woods.\nYou hear running water in the distance, and you hear a noise you've never heard before.\nLooking out, you see a cottage in the far distance.", monstersDwelling, woods);
+        Room woods3 = new Room("Deep woods", "You are deep into the woods, far away you can see the ocean and a ship.", deck, woods);
 
         deck.exit = woods3;
         monstersDwelling.exit = woods2;
@@ -75,6 +152,14 @@ public class GameLoop {
         ArrayList<Object> woods2Coordinates = new ArrayList<>();
         ArrayList<Object> woods3Coordinates = new ArrayList<>();
 
+        // Cottage ArrayLists
+        ArrayList<Object> monstersDwellingCoordinates = new ArrayList<>();
+        ArrayList<Object> mainRoomCoordinates = new ArrayList<>();
+
+        // Ship ArrayLists
+        ArrayList<Object> deckCoordinates = new ArrayList<>();
+        ArrayList<Object> cabinCoordinates = new ArrayList<>();
+        ArrayList<Object> roomCoordinates = new ArrayList<>();
 
         // Mansion rooms and their coordinates arraylist list
 
@@ -89,6 +174,14 @@ public class GameLoop {
         woods1Coordinates.add(i);
         woods1Coordinates.add(j);
 
+        monstersDwellingCoordinates.add(monstersDwelling);
+        monstersDwellingCoordinates.add(i);
+        monstersDwellingCoordinates.add(j);
+
+        deckCoordinates.add(deck);
+        deckCoordinates.add(i);
+        deckCoordinates.add(j);
+
         i = 0;
         j = 1;
 
@@ -100,12 +193,20 @@ public class GameLoop {
         woods2Coordinates.add(i);
         woods2Coordinates.add(j);
 
+        mainRoomCoordinates.add(mainRoom);
+        mainRoomCoordinates.add(i);
+        mainRoomCoordinates.add(j);
+
         i = 0;
         j = 2;
 
         woods3Coordinates.add(woods3);
         woods3Coordinates.add(i);
         woods3Coordinates.add(j);
+
+        cabinCoordinates.add(cabin);
+        cabinCoordinates.add(i);
+        cabinCoordinates.add(j);
 
         i = 1;
         j = 0;
@@ -131,13 +232,24 @@ public class GameLoop {
         woods.rooms.add(woods2Coordinates);
         woods.rooms.add(woods3Coordinates);
 
+        cottage.rooms.add(monstersDwellingCoordinates);
+        cottage.rooms.add(mainRoomCoordinates);
+
+        ship.rooms.add(deckCoordinates);
+        ship.rooms.add(cabinCoordinates);
+        ship.rooms.add(roomCoordinates);
+
         this.buildings.add(mansion);
         this.buildings.add(woods);
+        this.buildings.add(cottage);
+        this.buildings.add(ship);
 
-        // lab.addPerson(new Person("Randall the Rando"));
-        lab.addPerson(new Person("Elizabeth"));
-        // livingRoom.items.add(new FoodObject("Test Object", "this is an item", 0, 0,"NA"));
-
+        // Initializing people in rooms.
+        woods3.addPerson(new Person("Elizabeth"));
+        mainRoom.addPerson(new Person("M. De Lacey", "A kind blind guy that lives in the cottage."));
+        mainRoom.addPerson(new Person("Felix", "This is Delacey's son"));
+        mainRoom.addPerson(new Person("Agatha", "This is De Lacey's Daugther."));
+        mainRoom.addPerson(new Person("Safie", "This is Felix's fiancee."));
 
         // Initializing Player
         this.player = new Player("Frankie", mansion, lab);
@@ -159,6 +271,8 @@ public class GameLoop {
         // Victor's Bedroom
         victorsRoom.items.add(new Book("Frankenstein's Super Secret Diary", "Suspicious stains adorn the pages of this book", 10, "Today is the day that the creature I create come to life. \nI sure hope this creature isn't evil when it awakes. \nIf it is, I am running off to a boat off in the ocean on the coast of the deep woods."));
 
+        // Cottage: mainRoom
+        mainRoom.items.add(new FoodObject("Boiled Eggs", "Hopefully it is soft-boiled with a runny yolk.", 1, 5, "Ew...how do you mess up an egg?"));
 
         // Final room adjustments
         victorsRoom.lockRoom();
