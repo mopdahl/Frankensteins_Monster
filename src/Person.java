@@ -4,6 +4,7 @@ public class Person {
     
     //Attributes
     public String name;
+    public String description;
     protected Building currentBuilding;
     protected Building previouslyEnteredBuilding;
     protected Room currentRoom;
@@ -14,6 +15,18 @@ public class Person {
     protected boolean alive;
 
     //Constructor
+    public Person(String name, String description){
+        this.name = name;
+        this.description = description;
+        this.currentBuilding = null;
+        this.previouslyEnteredBuilding = null;
+        this.currentRoom = null;
+        this.healthLevel = 100;
+        this.inventory = new ArrayList<>();
+        this.inventoryLimit = 10;
+        this.inventoryWeight = 0;
+        this.alive = true;
+    }
     public Person(String name){
         this.name = name;
         this.currentBuilding = null;
@@ -120,7 +133,7 @@ public class Person {
                 this.currentRoom = desiredRoom;
                 System.out.println("You have entered " + desiredRoom);
             } else {
-                System.out.println("The doorknob is jammed, perhaps it's locked");
+                System.out.println("The doorknob is jammed, perhaps it's locked. You would need a key to enter.");
             }
         } else {
             int currentColumnPlus = currentColumn + 1;
@@ -132,7 +145,7 @@ public class Person {
                     this.currentRoom = desiredRoom;
                     System.out.println("You have entered " + desiredRoom);
                 } else {
-                    System.out.println("The doorknob is jammed, perhaps it's locked");
+                    System.out.println("The doorknob is jammed, perhaps it's locked. You would need a key to enter.");
                 }
 
                 } else {
