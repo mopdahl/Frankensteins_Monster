@@ -19,21 +19,20 @@ public class GameLoop {
      * Method to initialize game variables. Includes commands, buildings, and the player.
      */
     private void setUp() {
-        FoodObject food = new FoodObject("food", "a piece of food", 0, 0, "NA"); // placeholder: needed to get Class<Food> object 
-
         // Initializing Commands
         commands.put("enter", destinationName -> this.enter(destinationName));
-        commands.put("exit", buildingName -> this.player.exit(this.player.getCurrentBuilding())); // currently accepts any string after first word 'exit'
+        commands.put("exit", emptyString -> runIfEmpty(emptyString, () -> this.player.exit(this.player.getCurrentBuilding())));
         commands.put("look", objName -> this.look(objName)); // placeholder
         commands.put("consider", personName -> System.out.println(this.getPersonFromString(personName).getName() + " : " + this.getPersonFromString(personName).healthLevel));
         commands.put("get", objName -> this.player.pickUp(this.getObjectFromString(objName)));
         commands.put("drop", objName -> this.player.putDown(this.getObjectFromString(objName)));
-        commands.put("inventory", anyString -> System.out.println("Inventory: " + this.player.inventory));
-        commands.put("eat", foodName -> this.player.consume(castAs(food.getClass(), this.getObjectFromString(foodName))));
-        commands.put("options", anyString -> this.printCommandList());
+        commands.put("inventory", emptyString -> runIfEmpty(emptyString, () -> System.out.println("Inventory: " + this.player.inventory)));
+        commands.put("eat", foodName -> this.player.consume((FoodObject) this.getObjectFromString(foodName)));
+        commands.put("options", emptyString -> runIfEmpty(emptyString, () -> this.printCommandList()));
         commands.put("attack", personName -> this.player.attack(this.getPersonFromString(personName)));
         commands.put("unlock", destinationName -> this.player.unlockRoom((Room) this.getRoomFromString(destinationName)));
-        commands.put("map", misc -> this.player.currentBuilding.printMap());
+        commands.put("map", misc -> runIfEmpty(misc, () -> this.player.currentBuilding.printMap()));
+        commands.put("use", objName -> this.getObjectFromString(objName).use(this.player));
         
         // Initializing Buildings
         // Mansion creation
@@ -278,6 +277,14 @@ public class GameLoop {
         victorsRoom.lockRoom();
         victorsRoom.assignKey(key);
 
+    }
+
+    private static void runIfEmpty(String string, Runnable method) {
+        if (string.isEmpty()) {
+            method.run();
+        } else {
+            throw new RuntimeException("This command does not take any arguments!");
+        }
     }
 
     private void printCommandList() {
