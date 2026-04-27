@@ -117,9 +117,9 @@ public class GameLoop {
 ------------------------------------------------------         |  |
                             | |                                |  |
                             | |                                |  |     |-----
-                            | |                                |  |     |     -----
-                            | |                                |  |     |          ----
-                            | |                                |  |     |     -----
+                            | |                                |  |     |      --------
+                            | |                                |  |     |               ----
+                            | |                                |  |     |      --------
                             | |                                |  |     |-----
                             | |                                |  |     |
                     ------------------                    ------------------
@@ -249,6 +249,7 @@ public class GameLoop {
         mainRoom.addPerson(new Person("Felix", "This is Delacey's son"));
         mainRoom.addPerson(new Person("Agatha", "This is De Lacey's Daugther."));
         mainRoom.addPerson(new Person("Safie", "This is Felix's fiancee."));
+        room.addPerson(new Person("Victor Frankenstein", "This is the man that did it all. Should you seek revenge?"));
 
         // Initializing Player
         this.player = new Player("Frankie", mansion, lab);
@@ -268,14 +269,21 @@ public class GameLoop {
         kitchen.items.add(new FoodObject("Squab", "This seems gourmet...", 5, 15, "Wow... that was DELICIOUS!"));
 
         // Victor's Bedroom
-        victorsRoom.items.add(new Book("Frankenstein's Super Secret Diary", "Suspicious stains adorn the pages of this book", 10, "Today is the day that the creature I create come to life. \nI sure hope this creature isn't evil when it awakes. \nIf it is, I am running off to a boat off in the ocean on the coast of the deep woods."));
-
+        victorsRoom.items.add(new Book("Diary", "Suspicious stains adorn the pages of this book", 10, "Today is the day that the creature I create come to life. \nI sure hope this creature isn't evil when it awakes. \nIf it is, I am running off to a boat off in the ocean on the coast of the deep woods."));
+        victorsRoom.items.add(new GrabbableObject("Teddy Bear", "Looks old and worn, whoever's room this is...seems to be too old for a teddy bear."));
+ 
         // Cottage: mainRoom
         mainRoom.items.add(new FoodObject("Boiled Eggs", "Hopefully it is soft-boiled with a runny yolk.", 1, 5, "Ew...how do you mess up an egg?"));
+        mainRoom.items.add(new Book("Paradise Lost", "An epic poem in blank verse by the English poet John Milton (1608–1674). The poem concerns the biblical story of the fall of man: the temptation of Adam and Eve by the fallen angel Satan and their expulsion from the Garden of Eden.", 5, "..."));
+        mainRoom.items.add(new Book("Plutarch's Lives", "A series of 48 biographies of famous men written in Greek by the Greco-Roman philosopher, historian, and Apollonian priest Plutarch", 5, "..."));
 
         // Final room adjustments
         victorsRoom.lockRoom();
         victorsRoom.assignKey(key);
+
+        // Locking the deep woods until victor can read.
+        woods3.lockRoom();
+        woods3.assignKey(key);
 
     }
 

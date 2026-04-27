@@ -1,3 +1,4 @@
+
 public class Player extends Person {
 
     Boolean canRead;
@@ -62,6 +63,10 @@ public class Player extends Person {
         } else {
             System.out.println("You don't have the key to unlock this room.");
         }
+
+    }
+
+    public void talkTo(Person person){
 
     }
 

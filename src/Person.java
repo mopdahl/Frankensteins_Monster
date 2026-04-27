@@ -1,3 +1,4 @@
+import java.io.File;  // Import this class to handle errors
 import java.util.ArrayList;
 
 public class Person {
@@ -15,6 +16,7 @@ public class Person {
     protected int inventoryLimit;
     protected boolean alive;
     protected GrabbableObject heldItem;
+    protected File dialogue;
 
     //Constructor
     public Person(String name, String description){
@@ -28,6 +30,7 @@ public class Person {
         this.inventoryLimit = 10;
         this.inventoryWeight = 0;
         this.alive = true;
+        this.dialogue = null;
     }
     public Person(String name){
         this.name = name;
@@ -41,6 +44,7 @@ public class Person {
         this.inventoryWeight = 0;
         this.alive = true;
         this.heldItem = null;
+        this.dialogue = null;
     }
 
     public Person(){
