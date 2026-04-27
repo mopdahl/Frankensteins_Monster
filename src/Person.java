@@ -17,6 +17,7 @@ public class Person {
     protected boolean alive;
     protected GrabbableObject heldItem;
     protected File dialogue;
+    protected Person currentTarget;
 
     //Constructor
     public Person(String name, String description){
@@ -31,6 +32,7 @@ public class Person {
         this.inventoryWeight = 0;
         this.alive = true;
         this.dialogue = null;
+        this.currentTarget = null;
     }
     public Person(String name){
         this.name = name;
@@ -45,6 +47,7 @@ public class Person {
         this.alive = true;
         this.heldItem = null;
         this.dialogue = null;
+        this.currentTarget = null;
     }
 
     public Person(){
@@ -61,6 +64,10 @@ public class Person {
 
     public int getHealthLevel(){
         return this.healthLevel;
+    }
+
+    public Person getCurrentTarget() {
+        return this.currentTarget;
     }
 
     public void changeHealthLevel(int increment) {
@@ -93,11 +100,6 @@ public class Person {
     }
 
     public void enter(Room desiredRoom){
-
-        int desiredRow = 0;
-        int desiredColumn = 0;
-        int currentRow = 0;
-        int currentColumn = 0;
 
         // This method just allows you to enter the room if you currently aren't in a room, only for game designer
         if (this.currentRoom == null && this.previouslyEnteredBuilding == null){
@@ -151,8 +153,17 @@ public class Person {
             // also maybe in the future if the person being attacked has armor?
             int healthChange = 10;
             if (this.heldItem instanceof Weapon w) {healthChange += w.damage;}
+            person.currentTarget = this;
+
+            if (this instanceof Player) {
+                System.out.print("You attack " + person);
+            } else {
+                System.out.print(this + " attacks " + person);
+            }
+            if (this.heldItem != null) {System.out.print(" with " + this.heldItem);}
+            System.out.println("!");
             person.changeHealthLevel(-healthChange);
-           // person.respondToAttack();
+
         }
     }
 
@@ -160,9 +171,9 @@ public class Person {
         if (this.inventory.contains(object)) {
             if (this.heldItem != object) {
                 this.heldItem = object;
-                System.out.println("You start using " + object + ".");
+                System.out.println("You hold " + object + ".");
             } else {
-                throw new RuntimeException("You are already using " + object + ".");
+                throw new RuntimeException("You are already holding " + object + ".");
             }
         } else {
             throw new RuntimeException("You must be get " + object + " before you can hold it.");
@@ -172,7 +183,7 @@ public class Person {
     public void putAway(GrabbableObject object) {
         if (this.heldItem == object) {
             this.heldItem = null;
-            System.out.println("You stop using " + object + ".");
+            System.out.println("You stop holding " + object + ".");
         } else {
             throw new RuntimeException("You must be holding " + object + " before you put it away.");
         }
@@ -232,13 +243,10 @@ public class Person {
             this.currentRoom.addItem(obj);
         }
         this.currentRoom.addItem(new GrabbableObject("The corpse of " + this.name, "It is the mutilated body of " + this.name + ".", 40));
+        if (this instanceof Player) {System.out.print("You have ");}
+        else {System.out.print(this + " has ");}
+        System.out.println("died!");
     }
-
-    // public void respondToAttack() {
-    //     if (this.getHealthLevel() <= 0) {
-    //         this.die();
-    //     }
-    // }
 
     public String toString() {
         return this.name;

@@ -23,14 +23,15 @@ public class GameLoop {
         commands.put("enter", destinationName -> this.enter(destinationName));
         commands.put("exit", emptyString -> runIfEmpty(emptyString, () -> this.player.exit(this.player.getCurrentBuilding())));
         commands.put("look", objName -> this.look(objName)); // placeholder
-        commands.put("consider", personName -> System.out.println(this.getPersonFromString(personName).getName() + " : " + this.getPersonFromString(personName).healthLevel));
+        commands.put("consider", personName -> System.out.println(this.getPersonFromString(personName).showStats()));
         commands.put("get", objName -> this.player.pickUp(this.getObjectFromString(objName)));
         commands.put("drop", objName -> this.player.putDown(this.getObjectFromString(objName)));
         commands.put("inventory", emptyString -> runIfEmpty(emptyString, () -> System.out.println("Inventory: " + this.player.inventory)));
         commands.put("eat", foodName -> this.player.consume((FoodObject) this.getObjectFromString(foodName)));
         commands.put("options", emptyString -> runIfEmpty(emptyString, () -> this.printCommandList()));
         commands.put("attack", personName -> this.player.attack(this.getPersonFromString(personName)));
-        commands.put("unlock", destinationName -> this.player.unlockRoom((Room) this.getRoomFromString(destinationName)));
+        commands.put("lock", destinationName -> this.player.lockRoom((Room) this.getLocationFromString(destinationName)));
+        commands.put("unlock", destinationName -> this.player.unlockRoom((Room) this.getLocationFromString(destinationName)));
         commands.put("map", misc -> runIfEmpty(misc, () -> this.player.currentBuilding.printMap()));
         commands.put("use", objName -> this.getObjectFromString(objName).use(this.player));
         
@@ -356,20 +357,6 @@ public class GameLoop {
         throw new RuntimeException("Are you quite sure that's a place you could go?");
     }
 
-    private Object getRoomFromString(String locationName) {
-        if (locationName.isEmpty()) {throw new RuntimeException("You need to have SOME PLACE in mind.");}
-            for (int i = 0; i < this.buildings.size(); i++){
-                Building building = this.buildings.get(i);
-                for (i = 0; i < building.rooms.size(); i++){
-                    Room room = (Room) building.rooms.get(i).get(0);
-                    if (room.getName().toLowerCase().equals(locationName)){
-                        return room;
-                    }
-                }
-            }
-        return null;
-        }
-
     private GrabbableObject getObjectFromString(String objectName) {
         if (objectName.isEmpty()) {throw new RuntimeException("You need to have SOMETHING in mind.");}
         for (GrabbableObject obj : this.player.inventory) {
@@ -393,11 +380,8 @@ public class GameLoop {
                 return person;
             }
         }
+        if (personName.equals(this.player.name) || personName.equals("self")) {return this.player;}
         throw new RuntimeException("You don't see them here.");
-    }
-
-    private static <T> T castAs(Class<T> objClass, Object obj) {
-        return objClass.cast(obj);
     }
 
     public static void main(String[] args) {
@@ -415,6 +399,15 @@ public class GameLoop {
 
         // Game loop
         do {
+
+            // Check for attacks
+            for (Person person : game.player.currentRoom.people) {
+                if (person.getCurrentTarget() != null) {
+                    person.attack(person.getCurrentTarget());
+                }
+            }
+
+
             System.out.println();
             System.out.print("Input: ");
             String[] currentInput = input.nextLine().toLowerCase().split("\s+");
