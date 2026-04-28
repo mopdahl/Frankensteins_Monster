@@ -35,7 +35,7 @@ public class GameLoop {
         commands.put("map", misc -> runIfEmpty(misc, () -> this.player.currentBuilding.printMap()));
         commands.put("use", objName -> this.getObjectFromString(objName).use(this.player));
         commands.put("talk", personName -> this.player.talkTo(this.getPersonFromString(personName)));
-        commands.put("read", objName -> this.player.read((Book)this.getObjectFromString(objName)));
+        commands.put("read", objName -> this.player.read((Book) this.getObjectFromString(objName)));
         
         // Initializing Buildings
         // Mansion creation
@@ -306,6 +306,14 @@ public class GameLoop {
             method.run();
         } else {
             throw new RuntimeException("This command does not take any arguments!");
+        }
+    }
+
+    private static <T> T castAs(Class<T> cls, Object obj) {
+        if (obj.getClass().equals(cls)) {
+            return cls.cast(obj);
+        } else {
+            throw new RuntimeException(obj + "is not a " + cls + "!");
         }
     }
 

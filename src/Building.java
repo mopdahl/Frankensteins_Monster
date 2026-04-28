@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Building implements BuildingRequirements {
+public class Building {
     
     //Attributes
     String name;

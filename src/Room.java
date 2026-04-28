@@ -2,7 +2,7 @@
 import java.util.ArrayList;
 
 
-public class Room implements RoomRequirements {
+public class Room {
     
     private String name;
     private String description;
