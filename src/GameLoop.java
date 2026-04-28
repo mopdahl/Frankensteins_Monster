@@ -92,7 +92,7 @@ public class GameLoop {
         """);
         Room deck = new Room("Deck", "A bunch of sailors are here...They don't seem very nice.\nThey ", null, ship);
         Room cabin = new Room("Cabin", "This area consists of a lot of rooms, however you want to venture into Frankenstein's room.", null, ship);
-        Room room = new Room("Ship Room 001", "There is a bed with a frail figure laying in it, who could it be?", null, ship);
+        Room room = new Room("Room", "There is a bed with a frail figure laying in it, who could it be?", null, ship);
 
                 // Woods creation:
         Building woods = new Building("Woods", "This is the woods, there is a lot to explore here.", """
@@ -199,6 +199,10 @@ public class GameLoop {
         mainRoomCoordinates.add(i);
         mainRoomCoordinates.add(j);
 
+        cabinCoordinates.add(cabin);
+        cabinCoordinates.add(i);
+        cabinCoordinates.add(j);
+
         i = 0;
         j = 2;
 
@@ -206,9 +210,6 @@ public class GameLoop {
         woods3Coordinates.add(i);
         woods3Coordinates.add(j);
 
-        cabinCoordinates.add(cabin);
-        cabinCoordinates.add(i);
-        cabinCoordinates.add(j);
 
         i = 1;
         j = 0;
@@ -224,6 +225,9 @@ public class GameLoop {
         livingRoomCoordinates.add(i);
         livingRoomCoordinates.add(j);
 
+        roomCoordinates.add(room);
+        roomCoordinates.add(i);
+        roomCoordinates.add(j);
 
         mansion.rooms.add(labCoordinates);
         mansion.rooms.add(frankensteinsRoomCoordinates);
