@@ -290,7 +290,7 @@ public class Person {
      * @param desiredRoom
      * @return
      */
-    private boolean isAdjacentTo(Room desiredRoom){
+    public boolean isAdjacentTo(Room desiredRoom){
 
         int desiredRow = 0;
         int desiredColumn = 0;
