@@ -1,11 +1,12 @@
-import java.io.File;  // Import this class to handle errors
-import java.util.ArrayList;
+import java.util.ArrayList;  // Import this class to handle errors
 
 public class Person {
     
     //Attributes
     public String name;
     public String description;
+    public ArrayList<String> dialogue;
+    public int spokenTo;
     protected Building currentBuilding;
     protected Building previouslyEnteredBuilding;
     protected Room currentRoom;
@@ -16,7 +17,6 @@ public class Person {
     protected int inventoryLimit;
     protected boolean alive;
     protected GrabbableObject heldItem;
-    protected File dialogue;
     protected Person currentTarget;
 
     //Constructor
@@ -31,8 +31,9 @@ public class Person {
         this.inventoryLimit = 10;
         this.inventoryWeight = 0;
         this.alive = true;
-        this.dialogue = null;
         this.currentTarget = null;
+        this.dialogue = new ArrayList<>();
+        this.spokenTo = 0;
     }
     public Person(String name){
         this.name = name;
@@ -48,6 +49,8 @@ public class Person {
         this.heldItem = null;
         this.dialogue = null;
         this.currentTarget = null;
+        this.dialogue = new ArrayList<>();
+        this.spokenTo = 0;
     }
 
     public Person(){
@@ -85,6 +88,10 @@ public class Person {
         return (this.name + " | hitpoints: " + this.getHealthLevel() + " | holding: " + this.heldItem);
     }
 
+    /**
+     * Allows person current building to be the parameter building.
+     * @param building
+     */
     public void enter(Building building) {
         if (this.currentBuilding == null){
             this.currentBuilding = building;
@@ -99,6 +106,10 @@ public class Person {
         }
     }
 
+    /**
+     * Allows person to enter a room.
+     * @param desiredRoom
+     */
     public void enter(Room desiredRoom){
 
         // This method just allows you to enter the room if you currently aren't in a room, only for game designer
@@ -147,10 +158,12 @@ public class Person {
         }
     }
 
+    /**
+     * Allows person to attack another person.
+     * @param person
+     */
     public void attack(Person person){
         if (person.currentRoom == this.currentRoom){
-            //in the future we probably want a different health level change if the person is holding a weapon
-            // also maybe in the future if the person being attacked has armor?
             int healthChange = 10;
             if (this.heldItem instanceof Weapon w) {healthChange += w.damage;}
             person.currentTarget = this;
@@ -167,6 +180,10 @@ public class Person {
         }
     }
 
+    /**
+     * Allows person to hold a specific object in hand.
+     * @param object
+     */
     public void hold(GrabbableObject object) {
         if (this.inventory.contains(object)) {
             if (this.heldItem != object) {
@@ -180,6 +197,10 @@ public class Person {
         }
     }
 
+    /**
+     * Allows person to put away object in hand.
+     * @param object
+     */
     public void putAway(GrabbableObject object) {
         if (this.heldItem == object) {
             this.heldItem = null;
@@ -189,7 +210,10 @@ public class Person {
         }
     }
 
-
+    /**
+     * Allows person to pick up an object if inventory contains space.
+     * @param object
+     */
     public void pickUp(GrabbableObject object){
         if (!this.inventory.contains(object)){
             if (this.inventory.size() < this.inventoryLimit){
@@ -201,7 +225,6 @@ public class Person {
                 } else {
                     System.out.println("You cannot carry that much weight.");
                 }
-
             } else {
                 System.out.println("Your inventory is full.");
             }
@@ -210,6 +233,10 @@ public class Person {
         }
     }
 
+    /**
+     * Allows person to remove object from inventory.
+     * @param object
+     */
     public void putDown(GrabbableObject object){
         if (this.inventory.contains(object)){
             if (this.heldItem == object) {this.putAway(object);}
@@ -222,9 +249,12 @@ public class Person {
         }
     }
 
+    /**
+     * Allows person to consume food that can either increase or decrease the person's health.
+     * @param food
+     */
     public void consume(FoodObject food){
         if (this.inventory.contains(food)){
-            // In the future we can have maybe rankings for food? For like how much health it gives the player?
             if (!(food.foodReview == null)){
                 System.out.println(food.foodReview);
             }
@@ -236,6 +266,9 @@ public class Person {
         }
     }
 
+    /**
+     * Person can die and leave its corpse in the room they died in.
+     */
     protected void die() {
         this.alive = false;
         this.currentRoom.removePerson(this);
@@ -252,7 +285,12 @@ public class Person {
         return this.name;
     }
 
-    public boolean isAdjacentTo(Room desiredRoom){
+    /**
+     * Checks to see whether or not person is adjacent to the room they want to go to.
+     * @param desiredRoom
+     * @return
+     */
+    private boolean isAdjacentTo(Room desiredRoom){
 
         int desiredRow = 0;
         int desiredColumn = 0;

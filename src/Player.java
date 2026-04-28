@@ -63,6 +63,8 @@ public class Player extends Person {
     public void read(Book book){
         if (this.canRead){
             System.out.println(book.getText());
+        } else {
+            System.out.println("You are unable to read currently. This is a skill you have to develop by speaking to a certain someone.");
         }
     }
 
@@ -103,10 +105,36 @@ public class Player extends Person {
         }
     }
 
+    /**
+     * Checks to see if a person can be spoken to by player.
+     */
+    private Boolean canBeSpokenTo(Person personName){
+        if (personName.dialogue.size() == personName.spokenTo || this.currentRoom != personName.currentRoom ){
+            return false;
+        } else {
+            return true;
+        }
+    }
 
-
-    public void talkTo(Person person){
-
+    /**
+     * Allows player to speak to other characters.
+     * @param personName
+     */
+    public void talkTo(Person personName){
+        if (this.canBeSpokenTo(personName)){
+            int i = personName.spokenTo;
+            String response = personName.dialogue.get(i);
+            System.out.println(personName + ": " + response);
+            personName.spokenTo++;
+            if (personName.spokenTo == personName.dialogue.size()){
+                System.out.println("***");
+                System.out.println("You've reached the end of your conversation with this person.");
+                System.out.println("You have unlocked the ability to read. Did you have items you could not read?");
+                this.canRead = true;
+            } 
+        } else {
+            System.out.println("You cannot speak to this person.");
+        }
     }
 
     /**

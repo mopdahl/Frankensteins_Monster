@@ -34,6 +34,8 @@ public class GameLoop {
         commands.put("unlock", destinationName -> this.player.unlockRoom((Room) this.getLocationFromString(destinationName)));
         commands.put("map", misc -> runIfEmpty(misc, () -> this.player.currentBuilding.printMap()));
         commands.put("use", objName -> this.getObjectFromString(objName).use(this.player));
+        commands.put("talk", personName -> this.player.talkTo(this.getPersonFromString(personName)));
+        commands.put("read", objName -> this.player.read((Book)this.getObjectFromString(objName)));
         
         // Initializing Buildings
         // Mansion creation
@@ -246,11 +248,18 @@ public class GameLoop {
 
         // Initializing people in rooms.
         woods3.addPerson(new Person("Elizabeth"));
-        mainRoom.addPerson(new Person("M. De Lacey", "A kind blind guy that lives in the cottage."));
+        Person deLacey = new Person("DeLacey", "A kind blind guy that lives in the cottage.");
+
+        // Giving Delacey dialogue
+        mainRoom.addPerson(deLacey);
+        deLacey.dialogue.add("Hello, I am blind so I cannot see you travellor. Do you need food?");
+        deLacey.dialogue.add("I see that you cannot speak English, here let me teach you. Ever heard of Paradise Lost or Plutarch's Lives?");
+
         mainRoom.addPerson(new Person("Felix", "This is Delacey's son"));
         mainRoom.addPerson(new Person("Agatha", "This is De Lacey's Daugther."));
         mainRoom.addPerson(new Person("Safie", "This is Felix's fiancee."));
         room.addPerson(new Person("Victor Frankenstein", "This is the man that did it all. Should you seek revenge?"));
+        
 
         // Initializing Player
         this.player = new Player("Frankie", mansion, lab);
@@ -270,7 +279,7 @@ public class GameLoop {
         kitchen.items.add(new FoodObject("Squab", "This seems gourmet...", 5, 15, "Wow... that was DELICIOUS!"));
 
         // Victor's Bedroom
-        victorsRoom.items.add(new Book("Diary", "Suspicious stains adorn the pages of this book", 10, "Today is the day that the creature I create come to life. \nI sure hope this creature isn't evil when it awakes. \nIf it is, I am running off to a boat off in the ocean on the coast of the deep woods."));
+        victorsRoom.items.add(new Book("Diary", "Suspicious stains adorn the pages of this book", 10, "9/15/18??: I have made a human from scratch. No mother. No father. I am its creator. It shall have no other companion.\n9/20/18??: Today is the day that the creature I create come to life. \nI sure hope this creature isn't evil when it awakes. \nIf it is, I am running off to a boat off in the ocean on the coast of the deep woods."));
         victorsRoom.items.add(new GrabbableObject("Teddy Bear", "Looks old and worn, whoever's room this is...seems to be too old for a teddy bear."));
  
         // Cottage: mainRoom
@@ -283,8 +292,8 @@ public class GameLoop {
         victorsRoom.assignKey(key);
 
         // Locking the deep woods until victor can read.
-        woods3.lockRoom();
-        woods3.assignKey(key);
+        // woods3.lockRoom();
+        // woods3.assignKey(key);
 
     }
 
