@@ -259,7 +259,7 @@ public class GameLoop {
 
         // Giving Delacey dialogue
         mainRoom.addPerson(deLacey);
-        // deLacey.canGrantRead = true;
+        deLacey.canGrantRead = true;
         
         try {
             File file = new File("delacey.txt");
@@ -280,25 +280,29 @@ public class GameLoop {
         mainRoom.addPerson(new Person("Felix", "This is Delacey's son"));
         mainRoom.addPerson(new Person("Agatha", "This is De Lacey's Daugther."));
         mainRoom.addPerson(new Person("Safie", "This is Felix's fiancee."));
+        deck.people.add(new Person("Sailor 1", "Generic sailor"));
+        deck.people.add(new Person("Sailor 2", "Generic sailor"));
+        deck.people.add(new Person("Sailor 3", "Generic sailor"));
+        deck.people.add(new Person("Sailor 4", "Generic sailor"));
 
         Person victorFrankenstein = new Person("Victor Frankenstein", "This is the man that did it all. Should you seek revenge?");
         room.addPerson(victorFrankenstein);
 
-        // try {
-        //     File file = new File("frankenstein.txt");
-        //     Scanner fileReader = new Scanner(file);
+        try {
+            File dialogueFile = new File("frankenstein.txt");
+            Scanner dialogueReader = new Scanner(dialogueFile);
 
-        //     while (fileReader.hasNextLine()){
-        //         String data = fileReader.nextLine();
-        //         deLacey.dialogue.add(data);
-        //     }
+            while (dialogueReader.hasNextLine()){
+                String data = dialogueReader.nextLine();
+                deLacey.dialogue.add(data);
+            }
 
-        //     fileReader.close();
+            dialogueReader.close();
             
-        // } catch (FileNotFoundException e) {
-        //     System.out.println("Error");
-        //     e.printStackTrace();
-        // }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error");
+            e.printStackTrace();
+        }
         
         // Initializing Player
         this.player = new Player("Frankie", mansion, lab);
@@ -317,13 +321,20 @@ public class GameLoop {
         kitchen.items.add(new FoodObject("Squab", "This seems gourmet...", 5, 15, "Wow... that was DELICIOUS!"));
 
         // Victor's Bedroom
-        victorsRoom.items.add(new Book("Diary", "Suspicious stains adorn the pages of this book", 10, "9/15/18??: I have made a human from scratch. No mother. No father. I am its creator. It shall have no other companion.\n9/20/18??: Today is the day that the creature I create come to life. \nI sure hope this creature isn't evil when it awakes. \nIf it is, I am running off to a boat off in the ocean on the coast of the deep woods."));
+        victorsRoom.items.add(new Book("Diary", "Suspicious stains adorn the pages of this book. It seems to be the diary of the owner of this house, the person who would know who I am.\nI should keep this.", 10, "9/15/18??: I have made a human from scratch. No mother. No father. I am its creator. It shall have no other companion.\n9/20/18??: Today is the day that the creature I create come to life. \nI sure hope this creature isn't evil when it awakes. \nIf it is, I am running off to a boat off in the ocean on the coast of the deep woods."));
         victorsRoom.items.add(new GrabbableObject("Teddy Bear", "Looks old and worn, whoever's room this is...seems to be too old for a teddy bear."));
+        victorsRoom.items.add(new Weapon("Knife", "What was he doing with this in his bedroom?", 5, 20));
+
+        livingRoom.items.add(new GrabbableObject("Coffee table", "Nothing is on this coffee table.", this.player.inventoryWeightLimit));
+
  
         // Cottage: mainRoom
+        monstersDwelling.items.add(new Weapon("Shovel", "This could really knock someone out", 20, 30));
+        monstersDwelling.items.add(new FoodObject("Dead Rat", "This rat looks like its been dead for a while", 10, -50, "Am I gonna survive eating this?"));
         mainRoom.items.add(new FoodObject("Boiled Eggs", "Hopefully it is soft-boiled with a runny yolk.", 1, 5, "Ew...how do you mess up an egg?"));
         mainRoom.items.add(new Book("Paradise Lost", "An epic poem in blank verse by the English poet John Milton (1608–1674). The poem concerns the biblical story of the fall of man: the temptation of Adam and Eve by the fallen angel Satan and their expulsion from the Garden of Eden.", 5, "..."));
         mainRoom.items.add(new Book("Plutarch's Lives", "A series of 48 biographies of famous men written in Greek by the Greco-Roman philosopher, historian, and Apollonian priest Plutarch", 5, "..."));
+        mainRoom.items.add(new Weapon("Bow & Arrow", "This is a bow and arrow", 10, 17));
 
         // Final room adjustments
         victorsRoom.lockRoom();

@@ -1,5 +1,5 @@
 public class GrabbableObject {
-    
+
     String name;
     String description;
     int weight;

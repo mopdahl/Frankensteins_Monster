@@ -6,8 +6,8 @@ public class Person {
     public String name;
     public String description;
     public ArrayList<String> dialogue;
-    public int spokenTo;
-    public boolean canGrantRead;
+    protected int spokenTo;
+    protected boolean canGrantRead;
     protected Building currentBuilding;
     protected Building previouslyEnteredBuilding;
     protected Room currentRoom;
