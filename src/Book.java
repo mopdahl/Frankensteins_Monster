@@ -1,7 +1,4 @@
 public class Book extends GrabbableObject {
-    String name;
-    String description;
-    int weight;
     private String text;
 
     public Book(String name, String description, int weight, String text) {
