@@ -1,8 +1,11 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.function.Consumer;
+
 
 public class GameLoop {
 
@@ -256,18 +259,49 @@ public class GameLoop {
 
         // Giving Delacey dialogue
         mainRoom.addPerson(deLacey);
-        deLacey.dialogue.add("Hello, I am blind so I cannot see you travellor. Do you need food?");
-        deLacey.dialogue.add("I see that you cannot speak English, here let me teach you. Ever heard of Paradise Lost or Plutarch's Lives?");
+        // deLacey.canGrantRead = true;
+        
+        try {
+            File file = new File("delacey.txt");
+            Scanner fileReader = new Scanner(file);
+
+            while (fileReader.hasNextLine()){
+                String data = fileReader.nextLine();
+                deLacey.dialogue.add(data);
+            }
+
+            fileReader.close();
+            
+        } catch (FileNotFoundException e) {
+            System.out.println("Error");
+            e.printStackTrace();
+        }
 
         mainRoom.addPerson(new Person("Felix", "This is Delacey's son"));
         mainRoom.addPerson(new Person("Agatha", "This is De Lacey's Daugther."));
         mainRoom.addPerson(new Person("Safie", "This is Felix's fiancee."));
-        room.addPerson(new Person("Victor Frankenstein", "This is the man that did it all. Should you seek revenge?"));
-        
 
+        Person victorFrankenstein = new Person("Victor Frankenstein", "This is the man that did it all. Should you seek revenge?");
+        room.addPerson(victorFrankenstein);
+
+        // try {
+        //     File file = new File("frankenstein.txt");
+        //     Scanner fileReader = new Scanner(file);
+
+        //     while (fileReader.hasNextLine()){
+        //         String data = fileReader.nextLine();
+        //         deLacey.dialogue.add(data);
+        //     }
+
+        //     fileReader.close();
+            
+        // } catch (FileNotFoundException e) {
+        //     System.out.println("Error");
+        //     e.printStackTrace();
+        // }
+        
         // Initializing Player
         this.player = new Player("Frankie", mansion, lab);
-        //this.player.currentRoom = lab; -> currentRoom is currently private
 
         // Initializing objects in rooms
 
@@ -294,10 +328,6 @@ public class GameLoop {
         // Final room adjustments
         victorsRoom.lockRoom();
         victorsRoom.assignKey(key);
-
-        // Locking the deep woods until victor can read.
-        // woods3.lockRoom();
-        // woods3.assignKey(key);
 
     }
 
@@ -453,7 +483,6 @@ public class GameLoop {
                     person.attack(person.getCurrentTarget());
                 }
             }
-
 
             System.out.println();
             System.out.print("Input: ");

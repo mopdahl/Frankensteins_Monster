@@ -7,6 +7,7 @@ public class Person {
     public String description;
     public ArrayList<String> dialogue;
     public int spokenTo;
+    public boolean canGrantRead;
     protected Building currentBuilding;
     protected Building previouslyEnteredBuilding;
     protected Room currentRoom;
@@ -34,6 +35,7 @@ public class Person {
         this.currentTarget = null;
         this.dialogue = new ArrayList<>();
         this.spokenTo = 0;
+        this.canGrantRead = false;
     }
     public Person(String name){
         this.name = name;
@@ -51,6 +53,7 @@ public class Person {
         this.currentTarget = null;
         this.dialogue = new ArrayList<>();
         this.spokenTo = 0;
+        this.canGrantRead = false;
     }
 
     public Person(){

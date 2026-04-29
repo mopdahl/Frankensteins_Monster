@@ -8,9 +8,9 @@ _____ 2 pts: Storyline driving the game is **engaging**, and individual elements
 
 _____ 2 pts: Game has **multiple possible paths / outcomes** (i.e. gameplay depends on player's choices and is not the same every time).
 
-_____ 1 pt: Gameplay supports **reversible moves** where reasonable (e.g., if you pick up an object, you should be able to put it back down again later, possibly in a different place; if you go north then you should be able to return to the previous location by going south unless something has blocked your return path).
+__✅__ 1 pt: Gameplay supports **reversible moves** where reasonable (e.g., if you pick up an object, you should be able to put it back down again later, possibly in a different place; if you go north then you should be able to return to the previous location by going south unless something has blocked your return path).
 
-_____ 1 pt: Some paths through the game have **restricted access** until the player has completed a task or acquired a specific item (i.e. a key to open a door, etc.).
+__✅__ 1 pt: Some paths through the game have **restricted access** until the player has completed a task or acquired a specific item (i.e. a key to open a door, etc.).
 
 
 ## Back-End Design (10 pts)
@@ -19,9 +19,9 @@ _____ 2 pts: Selected classes(s) are **effective, efficient** at supporting the 
 
 _____ 2 pts: Design justification includes a discussion of at least one (reasonable) **alternative design** that could have been used, and the reasons why you decided against this alternative.
 
-_____ 2 pts: The project makes effective use of **Java built-in classes** whenever they are appropriate.
+__✅__ 2 pts: The project makes effective use of **Java built-in classes** whenever they are appropriate.
 
-_____ 2 pts: The project's design is **extensible** (i.e. someone else could pick up where you left off, adding on or modifying the game without requiring a total rewrite).
+__✅__ 2 pts: The project's design is **extensible** (i.e. someone else could pick up where you left off, adding on or modifying the game without requiring a total rewrite).
 
 _____ 2 pts: Submission includes an **architecture diagram** describing the relationships between all classes.
 

@@ -1,4 +1,3 @@
-
 public class Player extends Person {
 
     Boolean canRead;
@@ -127,11 +126,13 @@ public class Player extends Person {
             System.out.println(personName + ": " + response);
             personName.spokenTo++;
             if (personName.spokenTo == personName.dialogue.size()){
-                System.out.println("***");
+                System.out.println("\n***");
                 System.out.println("You've reached the end of your conversation with this person.");
-                System.out.println("You have unlocked the ability to read. Did you have items you could not read?");
-                this.canRead = true;
-            } 
+                if(personName.canGrantRead){
+                    System.out.println("You have unlocked the ability to read. Did you have items you could not read?");
+                    this.canRead = true;
+                }
+}            
         } else {
             System.out.println("You cannot speak to this person.");
         }
