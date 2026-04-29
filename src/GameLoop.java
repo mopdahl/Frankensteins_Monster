@@ -27,15 +27,15 @@ public class GameLoop {
         commands.put("get", objName -> this.player.pickUp(this.getObjectFromString(objName)));
         commands.put("drop", objName -> this.player.putDown(this.getObjectFromString(objName)));
         commands.put("inventory", emptyString -> runIfEmpty(emptyString, () -> System.out.println("Inventory: " + this.player.inventory)));
-        commands.put("eat", foodName -> this.player.consume((FoodObject) this.getObjectFromString(foodName)));
+        commands.put("eat", foodName -> tryWithNewException(() -> this.player.consume((FoodObject) this.getObjectFromString(foodName))));
         commands.put("options", emptyString -> runIfEmpty(emptyString, () -> this.printCommandList()));
         commands.put("attack", personName -> this.player.attack(this.getPersonFromString(personName)));
-        commands.put("lock", destinationName -> this.player.lockRoom((Room) this.getLocationFromString(destinationName)));
-        commands.put("unlock", destinationName -> this.player.unlockRoom((Room) this.getLocationFromString(destinationName)));
+        commands.put("lock", destinationName -> tryWithNewException(() -> this.player.lockRoom((Room) this.getLocationFromString(destinationName))));
+        commands.put("unlock", roomName -> tryWithNewException(() -> this.player.unlockRoom((Room) this.getLocationFromString(roomName))));
         commands.put("map", misc -> runIfEmpty(misc, () -> this.player.currentBuilding.printMap()));
         commands.put("use", objName -> this.getObjectFromString(objName).use(this.player));
         commands.put("talk", personName -> this.player.talkTo(this.getPersonFromString(personName)));
-        commands.put("read", objName -> this.player.read((Book) this.getObjectFromString(objName)));
+        commands.put("read", bookName -> tryWithNewException(() -> this.player.read((Book) this.getObjectFromString(bookName))));
         
         // Initializing Buildings
         // Mansion creation
@@ -301,6 +301,12 @@ public class GameLoop {
 
     }
 
+    /**
+     * Checks if the given string is empty, and if so runs the method.
+     * @param string The string to be compared
+     * @param method The method to be run
+     * @throws RuntimeException When the string is not empty.
+     */
     private static void runIfEmpty(String string, Runnable method) {
         if (string.isEmpty()) {
             method.run();
@@ -309,14 +315,22 @@ public class GameLoop {
         }
     }
 
-    private static <T> T castAs(Class<T> cls, Object obj) {
-        if (obj.getClass().equals(cls)) {
-            return cls.cast(obj);
-        } else {
-            throw new RuntimeException(obj + "is not a " + cls + "!");
+    /**
+     * Tries to run the given method, but prints a new, set ExceptionError message.
+     * @param method The method to be run
+     * @throws RuntimeException When the method fails
+     */
+    private static void tryWithNewException(Runnable method) {
+        try {
+            method.run();
+        } catch (RuntimeException e) {
+            System.out.println("You cannot do that.");
         }
     }
 
+    /**
+     * Prints a list of the commands available in the game's commands.
+     */
     private void printCommandList() {
         for (String commandName : this.commands.keySet()) {
             System.out.print(commandName + " | ");
@@ -378,6 +392,12 @@ public class GameLoop {
         throw new RuntimeException("Are you quite sure that's a place you could go?");
     }
 
+    /**
+     * Finds and returns the first object in the player's inventory or current room with the given name.
+     * @param objectName The name of the object to be returned
+     * @return The first object whose name matches the given string.
+     * @throws RuntimeException When no object with the given name is found.
+     */
     private GrabbableObject getObjectFromString(String objectName) {
         if (objectName.isEmpty()) {throw new RuntimeException("You need to have SOMETHING in mind.");}
         for (GrabbableObject obj : this.player.inventory) {
@@ -394,6 +414,12 @@ public class GameLoop {
         throw new RuntimeException("You don't see that here.");
     }
 
+    /**
+     * Finds and returns the first Person in the player's current room whose name matches the given string.
+     * @param personName The name of the Person to be located
+     * @return The person with the given name
+     * @throws RuntimeException When no Person with the given name is found
+     */
     private Person getPersonFromString(String personName) {
         if (personName.isEmpty()) {throw new RuntimeException("You need to have SOMEONE in mind.");}
         for (Person person : this.player.getCurrentRoom().people) {
