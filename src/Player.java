@@ -10,7 +10,7 @@ public class Player extends Person {
         this.currentBuilding = building;
         this.currentRoom = room;
         this.spawnPoint = room;
-        this.remainingLives = 1; // added AFTER architecture diagram was written
+        this.remainingLives = 5; // added AFTER architecture diagram was written
     }
 
     /**

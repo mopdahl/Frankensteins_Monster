@@ -69,3 +69,4 @@ Note:  It's a good idea to also make this list available inside the game, in res
 If your game includes challenges that must be overcome to win, also list them below.
 
   * Kill Frankenstein
+    - Frankenstein's room is only accessible by passing a room of aggressive sailors, who must be killed or bypassed (this can be done by simply 'entering' the next room). In order to survive the sailors AND kill Frankenstein, the player must make use of a weapon.

@@ -491,7 +491,7 @@ public class GameLoop {
         boolean stillPlaying = true;
         System.out.println("\n || Welcome to FRANKENSTEIN'S MONSTER || ");
         System.out.println("\nYou are violently shaken awake and as you open your eyes, you see a figure run away.\nYour body is stiff, it's almost as if it's the first time you've ever moved.\nYou don't have any clothes on or anything on you.\nWHO are you?");
-        System.out.println("\nTo found out, type 'options' to see what you can do.");
+        System.out.println("\nTo find out, type 'options' to see what you can do.");
 
         // Game loop
         do {
