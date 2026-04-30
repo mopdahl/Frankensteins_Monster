@@ -1,8 +1,8 @@
 public class GrabbableObject {
 
-    String name;
-    String description;
-    int weight;
+    public String name;
+    public String description;
+    public int weight;
 
     public GrabbableObject(String name, String description, int weight) {
         this.name = name;
