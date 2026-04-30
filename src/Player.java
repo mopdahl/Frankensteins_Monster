@@ -2,6 +2,7 @@ public class Player extends Person {
 
     Boolean canRead;
     Room spawnPoint;
+    int remainingLives;
 
     public Player(String name, Building building, Room room) {
         super(name);
@@ -9,6 +10,7 @@ public class Player extends Person {
         this.currentBuilding = building;
         this.currentRoom = room;
         this.spawnPoint = room;
+        this.remainingLives = 1; // added AFTER architecture diagram was written
     }
 
     /**
@@ -144,7 +146,12 @@ public class Player extends Person {
      */
     public void die() {
         super.die();
+        this.remainingLives -= 1;
         this.respawn();
+    }
+
+    public String showStats() {
+        return super.showStats() + " | lives remaining: " + this.remainingLives;
     }
 
     public String toString() {

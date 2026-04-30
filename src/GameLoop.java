@@ -12,6 +12,7 @@ public class GameLoop {
     private Player player; // Convert to Player class later
     private ArrayList<Building> buildings;
     private HashMap<String, Consumer<String>> commands;
+    private Person antagonist;
 
     public GameLoop() {
         this.buildings = new ArrayList<>();
@@ -280,13 +281,14 @@ public class GameLoop {
         mainRoom.addPerson(new Person("Felix", "This is Delacey's son"));
         mainRoom.addPerson(new Person("Agatha", "This is De Lacey's Daugther."));
         mainRoom.addPerson(new Person("Safie", "This is Felix's fiancee."));
-        deck.people.add(new Person("Sailor 1", "Generic sailor"));
-        deck.people.add(new Person("Sailor 2", "Generic sailor"));
-        deck.people.add(new Person("Sailor 3", "Generic sailor"));
-        deck.people.add(new Person("Sailor 4", "Generic sailor"));
+        deck.addPerson(new Person("Sailor 1", "Generic sailor"));
+        deck.addPerson(new Person("Sailor 2", "Generic sailor"));
+        deck.addPerson(new Person("Sailor 3", "Generic sailor"));
+        deck.addPerson(new Person("Sailor 4", "Generic sailor"));
 
         Person victorFrankenstein = new Person("Victor Frankenstein", "This is the man that did it all. Should you seek revenge?");
         room.addPerson(victorFrankenstein);
+        this.antagonist = victorFrankenstein;
 
         try {
             File dialogueFile = new File("frankenstein.txt");
@@ -306,6 +308,12 @@ public class GameLoop {
         
         // Initializing Player
         this.player = new Player("Frankie", mansion, lab);
+
+        // Making sailors aggressive
+        for (Person sailor : deck.people) {
+            sailor.currentTarget = this.player;
+        }
+
 
         // Initializing objects in rooms
 
@@ -487,14 +495,24 @@ public class GameLoop {
 
         // Game loop
         do {
+            
+            // --- End Game conditions:
 
-            // Check for attacks
-            for (Person person : game.player.currentRoom.people) {
-                if (person.getCurrentTarget() != null) {
-                    person.attack(person.getCurrentTarget());
-                }
+            // If player runs out of lives, they lose
+            if (game.player.remainingLives < 1) {
+                System.out.println("But broken bones cannot be restored forever.");
+                System.out.println("\nYou have lost!");
+                break;
+
+            // If player defeats Frankenstein, they win
+            } else if (!game.antagonist.alive) {
+                System.out.print("As you see your creator's body lying still before you, the rage animating your body slowly fades.");
+                System.out.println(" Your limbs feel heavy, disjointed; your breath grows shallow. You have finally avenged his curse on your existence -- finally, looking at your own hands, you can see a monster.\n");
+                System.out.println("You win!");
+                break;
             }
 
+            // --- Get and run user input
             System.out.println();
             System.out.print("Input: ");
             String[] currentInput = input.nextLine().toLowerCase().split("\s+");
@@ -519,6 +537,13 @@ public class GameLoop {
             // Otherwise, print message.    
             } else {
                 System.out.println("You aren't quite sure how to do that.");
+            }
+
+            // --- Check for attacks
+            for (Person person : game.player.currentRoom.people) {
+                if (person.getCurrentTarget() != null) {
+                    person.attack(person.getCurrentTarget());
+                }
             }
 
         } while (stillPlaying);
