@@ -9,7 +9,6 @@ public class Building {
     String map;
 
     //Constructor
-
     public Building(String name, String description, String map){
         this.name = name;
         this.description = description;

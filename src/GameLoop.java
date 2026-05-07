@@ -292,14 +292,14 @@ public class GameLoop {
 
         try {
             File dialogueFile = new File("frankenstein.txt");
-            Scanner dialogueReader = new Scanner(dialogueFile);
+            Scanner dialogueReader2 = new Scanner(dialogueFile);
 
-            while (dialogueReader.hasNextLine()){
-                String data = dialogueReader.nextLine();
-                deLacey.dialogue.add(data);
+            while (dialogueReader2.hasNextLine()){
+                String data2 = dialogueReader2.nextLine();
+                victorFrankenstein.dialogue.add(data2);
             }
 
-            dialogueReader.close();
+            dialogueReader2.close();
             
         } catch (FileNotFoundException e) {
             System.out.println("Error");

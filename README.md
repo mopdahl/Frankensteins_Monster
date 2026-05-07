@@ -26,10 +26,10 @@
     - I would love to make mobile characters, who could possibly follow/hunt the player. Also, it would have been helpful to add a 'help' command, and to override GrabbableObject's 'use' method in more of its subclasses.
 
  - What was the most helpful **piece of feedback** you received while working on your project? Who gave it to you?
-    -  ?
+    -  I can't recall any feedback.
 
  - If you could go back in time and give your past self some **advice** about this project, what hints would you give?
-    - 
     -  Think about how to organize classes before anything else! Adding seemingly superfluous superclasses may make it easier to generalize method calls. Also, write docstrings as you write functions, even if you think you'll delete them later.
 
  - _If you worked with a team:_ please comment on how your **team dynamics** influenced your experience working on this project.
+    - I really enjoyed working in a team and feel like we were able to develop a more complex game in a shorter amount of time than if we were to have worked alone. It was easy to communicate and work virtually which helped alot. 
