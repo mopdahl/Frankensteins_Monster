@@ -27,9 +27,11 @@
 
  - What was the most helpful **piece of feedback** you received while working on your project? Who gave it to you?
     -  I can't recall any feedback.
+    - Several people in class were confused by the navigation, specifically when to use 'exit' instead of 'enter'. While we did not get around to changing the navigation, it was helpful to think about how to break it down more naturally.
 
  - If you could go back in time and give your past self some **advice** about this project, what hints would you give?
     -  Think about how to organize classes before anything else! Adding seemingly superfluous superclasses may make it easier to generalize method calls. Also, write docstrings as you write functions, even if you think you'll delete them later.
 
  - _If you worked with a team:_ please comment on how your **team dynamics** influenced your experience working on this project.
     - I really enjoyed working in a team and feel like we were able to develop a more complex game in a shorter amount of time than if we were to have worked alone. It was easy to communicate and work virtually which helped alot. 
+    - I found that our team dynamics helped divide the creative and practical workload. We did not have strict roles, which did occasionally lead to inconsistent code. However, it also allowed us to focus on parts of the code we each knew how to implement, or wanted to expand. I found that this helped us build off of each other's ideas, even though it occasionally lead to confusion. In a larger group or more complex project, this may have been unsustainable; however, I found that in this particular project, it helped us work more efficiently.
